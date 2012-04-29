@@ -85,7 +85,7 @@ CollectionTests() {
     } catch (final ex) {
       ifnull = ex;
     }
-    ok(ifnull is $TypeError, 'handles a null (without inital value) properly');
+    ok(ifnull is TypeError$, 'handles a null (without inital value) properly');
 
     ok($(null).reduce((x,y){}, 138) === 138, 'handles a null (with initial value) properly');
 //    equal($([]).reduce((x,y){}, null), null, 'undefined can be passed as a special case');
@@ -113,7 +113,7 @@ CollectionTests() {
     } catch (final ex) {
       ifnull = ex;
     }
-    ok(ifnull is $TypeError, 'handles a null (without inital value) properly');
+    ok(ifnull is TypeError$, 'handles a null (without inital value) properly');
 
     ok($(null).reduceRight((x,y){}, 138) == 138, 'handles a null (with initial value) properly');
 

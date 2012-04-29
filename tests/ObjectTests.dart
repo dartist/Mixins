@@ -14,11 +14,11 @@ ObjectTests() {
     // the test above is not safe because it relies on for-in enumeration order
 //    var a = []; a[1] = 0;
 //    equal($($(a).keys()).join(', '), '1', 'is not fooled by sparse arrays; see issue #95');
-    raises(() => $(null).keys(), $TypeError.type, 'throws an error for `null` values');
+    raises(() => $(null).keys(), TypeError$.type, 'throws an error for `null` values');
 //    raises(function() { _.keys(void 0); }, $TypeError.type, 'throws an error for `undefined` values');
-    raises(() => $(1).keys(), $TypeError.type, 'throws an error for number primitives');
-    raises(() => $('a').keys(), $TypeError.type, 'throws an error for string primitives');
-    raises(() => $(true).keys(), $TypeError.type, 'throws an error for boolean primitives');
+    raises(() => $(1).keys(), TypeError$.type, 'throws an error for number primitives');
+    raises(() => $('a').keys(), TypeError$.type, 'throws an error for string primitives');
+    raises(() => $(true).keys(), TypeError$.type, 'throws an error for boolean primitives');
   });
 
   test("objects: values", () {

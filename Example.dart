@@ -3,15 +3,15 @@
 void main() {
   print("Hello World");
   
-  $List people = $([
+  List$ people = $([
     {'id':13,'name':'Tom','grade':'C'}, 
     {'id':11,'name':'Dick','grade':'B'}, 
     {'id':12,'name':'Harry','grade':'A'}, 
     {'id':10,'name':'Larry','grade':'B'}
   ]);
   
-  $List ids = $(people.pluck('id'));
-  $List grades = $(people.pluck('grade'));
+  List$ ids = $(people.pluck('id'));
+  List$ grades = $(people.pluck('grade'));
   print("Min ${ids.min()} / Max ${ids.max()}");
   print("Reversed ${ids.reverse()}, Shuffled ${ids.shuffle()}");
   print("SortBy id: ${$(people.sortBy('id')).pluck('id')}, name: ${$(people.sortBy('name')).pluck('name')}");
@@ -41,7 +41,7 @@ void main() {
   var harry = people.single((x) => x['id'] == 12);
   print("Found ${harry['name']}!");
 
-  $List list = $([1,5,10]); 
+  List$ list = $([1,5,10]); 
   int sum = list.reduce((memo, value) => memo + value);
   int minus = list.reduce((memo, value) => memo - value);
   int minusRight = list.reduceRight((memo, value) => memo - value);

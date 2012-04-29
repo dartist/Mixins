@@ -1,31 +1,6 @@
 #library("Mixin");
 #import("dart:core");
 
-typedef IteratorFn(memo, value);
-typedef bool _Predicate(item);
-typedef Dynamic Expr(item);
-
-class $TypeError {
-  String msg;
-  $TypeError(this.msg) {
-//    print("TypeError $msg");
-  }
-  static type(x) => x is $TypeError;
-}
-
-_isFalsy(e) => e == null || e == false || e == 0 || e == double.NAN || e == '';
-_cloneList(List from) {
-  List to = [];
-  for (var item in from) to.add(item);
-  return to;
-}
-_cloneMap(Map from) {
-  Map to = {};
-  for (var key in from.getKeys())
-    to[key] = from[key];
-  return to;
-}
-
 $(target){
   for (Function factory in Mixin.factories) {
     var $target = factory(target);
@@ -34,7 +9,7 @@ $(target){
   return target;
 }
 
-//TODO: rename to $ when dart supports callable classes
+//TODO: Rename to $ when Dart adds support for callable classes
 class Mixin {
   var e;
   Mixin(this.e);
@@ -44,9 +19,9 @@ class Mixin {
     if (_factories == null) {
       _factories = [
         (target) => target is Mixin ? target : null,
-        (target) => target is Collection ? new $List(target) : null, 
-        (target) => target is Map ? new $Map(target) : null,
-        (target) => target is String ? new $String(target) : null,
+        (target) => target is Collection ? new List$(target) : null, 
+        (target) => target is Map ? new Map$(target) : null,
+        (target) => target is String ? new String$(target) : null,
         (target) => new Mixin(target),
       ];
     }
@@ -97,16 +72,16 @@ class Mixin {
   reduce(f(x,y), [memo]) {
     if (e == null)
       if (memo == null)
-        throw new $TypeError('Reduce of empty array with no initial value');
+        throw new TypeError$('Reduce of empty array with no initial value');
       else return memo;
-    return $List.wrap(e).reduce(f,memo);
+    return List$.wrap(e).reduce(f,memo);
   }
   void foldl(f(x,y), [memo]) => reduce(f,memo);
   void inject(f(x,y), [memo]) => reduce(f,memo);
   
   reduceRight(f(x,y), [memo]) => e == null 
       ? reduce(f,memo) //same behavior if null
-      : $List.wrap(e).reduceRight(f,memo);  
+      : List$.wrap(e).reduceRight(f,memo);  
   void foldr(f(x,y), [memo]) => reduceRight(f,memo);
   
   static int _idCounter = 0;
@@ -142,7 +117,7 @@ class Mixin {
   static Map _mixins;
   static void mixin (obj) {
     if (_mixins == null) _mixins = {}; //TODO: remove after Dart gets static lazy initialization
-    $Map.wrap(obj).functions().forEach((name){
+    Map$.wrap(obj).functions().forEach((name){
       _mixins[name] = obj[name];
     });
   }
@@ -150,7 +125,7 @@ class Mixin {
   noSuchMethod(name, args) {
     if (_mixins == null) _mixins = {}; //TODO: remove after Dart gets static lazy initialization
     Function fn = _mixins[name];
-    if (fn == null) throw new $TypeError('Method $name not implemented');
+    if (fn == null) throw new TypeError$('Method $name not implemented');
     var len = args.length;
     //TODO replace with generic sln when Dart gets varargs + Function call/apply ops
     //print("calling fn with $len args..");
@@ -188,12 +163,12 @@ class Mixin {
     return e;
   }  
     
-  String toDebugString() => $String.debugString(e);
+  String toDebugString() => String$.debugString(e);
 }
 
-class $String extends Mixin {
+class String$ extends Mixin {
   String target;
-  $String(target) : super(target) {
+  String$(target) : super(target) {
     this.target = target == null 
       ? ""
       : target is String 
@@ -216,9 +191,9 @@ class $String extends Mixin {
           .replaceAll(" ", "");
 }
 
-class $List extends Mixin {
+class List$ extends Mixin {
   List target;
-  $List(target) : super(target) {
+  List$(target) : super(target) {
     this.target = target == null 
       ? []
       : target is List 
@@ -231,7 +206,7 @@ class $List extends Mixin {
     target[index] = value;
   } 
 
-  static $List wrap(list) => new $List(list);
+  static List$ wrap(list) => new List$(list);
   List get value() => target;
   num sum() => reduce((memo, value) => memo + value, 0);
   List clone() => _cloneList(target);
@@ -259,7 +234,7 @@ class $List extends Mixin {
         memo = iterator(memo, value);
       }
     });
-    if (!hasInitial) throw new $TypeError('Reduce of empty array with no initial value');
+    if (!hasInitial) throw new TypeError$('Reduce of empty array with no initial value');
     return memo;
   }
   foldl(IteratorFn iterator,  [memo]) => reduce(iterator, memo); 
@@ -474,13 +449,13 @@ class $List extends Mixin {
 //  };    
 }
 
-class $Map extends Mixin {
+class Map$ extends Mixin {
   Map target;
-  $Map(target) : super(target) {
+  Map$(target) : super(target) {
     this.target = target == null ? {} : target;
   }
   
-  static $Map wrap(e) => new $Map(e);
+  static Map$ wrap(e) => new Map$(e);
   
   Collection keys() => target.getKeys();
   Collection values() => target.getValues();
@@ -497,8 +472,8 @@ class $Map extends Mixin {
   
   include(item) => target.containsValue(item);
   contains(item) => include(item);
-  max([Expr expr]) => $List.wrap(target.getValues()).max(expr);
-  min([Expr expr]) => $List.wrap(target.getValues()).min(expr);
+  max([Expr expr]) => List$.wrap(target.getValues()).max(expr);
+  min([Expr expr]) => List$.wrap(target.getValues()).min(expr);
 
   List functions() {
     List<String> names = [];
@@ -536,3 +511,29 @@ class $Map extends Mixin {
   
   has() => target.containsKey(target);
 }
+
+typedef IteratorFn(memo, value);
+typedef bool _Predicate(item);
+typedef Dynamic Expr(item);
+
+class TypeError$ {
+  String msg;
+  TypeError$(this.msg) {
+//    print("TypeError $msg");
+  }
+  static type(x) => x is TypeError$;
+}
+
+_isFalsy(e) => e == null || e == false || e == 0 || e == double.NAN || e == '';
+_cloneList(List from) {
+  List to = [];
+  for (var item in from) to.add(item);
+  return to;
+}
+_cloneMap(Map from) {
+  Map to = {};
+  for (var key in from.getKeys())
+    to[key] = from[key];
+  return to;
+}
+

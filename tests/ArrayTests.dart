@@ -137,8 +137,8 @@ test("arrays: difference", () {
 
 test('arrays: zip', () {
   var names = ['moe', 'larry', 'curly'], ages = [30, 40, 50], leaders = [true];
-  var stooges = $List.zip([names, ages, leaders]);
-  equal($String.debugString(stooges), 'moe,30,true,larry,40,,curly,50,', 'zipped together arrays of different lengths');
+  var stooges = List$.zip([names, ages, leaders]);
+  equal(String$.debugString(stooges), 'moe,30,true,larry,40,,curly,50,', 'zipped together arrays of different lengths');
 });
 
 test("arrays: indexOf", () {
