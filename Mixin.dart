@@ -22,6 +22,7 @@ class Mixin {
         (target) => target is Collection ? new List$(target) : null, 
         (target) => target is Map ? new Map$(target) : null,
         (target) => target is String ? new String$(target) : null,
+        (target) => target is num ? new Num$(target) : null,
         (target) => new Mixin(target),
       ];
     }
@@ -59,7 +60,8 @@ class Mixin {
         
   void each(f(x)) {
     if (e == null) return;
-    e.forEach(f);
+    if (e is Collection) e.forEach(f);
+    else if (e is Map) e.forEach((k,v) => f(v));
   }
   void forEach(f(x)) => each(f);
   
@@ -89,10 +91,6 @@ class Mixin {
     int id = _idCounter++;
     return prefix == null ? "$prefix$id" : id;
   }
-  
-  times(iterator(int n)) {
-    for (int i = 0; i < e; i++) iterator(i);
-  }  
   
   result(key) { 
     if (e == null) return null;
@@ -164,6 +162,17 @@ class Mixin {
   }  
     
   String toDebugString() => String$.debugString(e);
+}
+
+class Num$ extends Mixin {
+  num target;
+  Num$(target) : super(target) {
+    this.target = target;
+  }
+
+  times(iterator(int n)) {
+    for (int i = 0; i < e; i++) iterator(i);
+  }    
 }
 
 class String$ extends Mixin {
