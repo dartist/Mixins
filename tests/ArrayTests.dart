@@ -1,6 +1,6 @@
 #library("ArrayTests");
 #import("dart:json");
-#import("../TestSuite.dart");
+#import("../DUnit.dart");
 #import("../Mixin.dart");
 
 ArrayTests() {

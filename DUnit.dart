@@ -1,29 +1,10 @@
-#library("TestSuite");
+#library("DUnit");
 
-class Assertion {
-  var actual, expected;
-  bool deepEqual,strictEqual;
-  String msg;
-  Assertion(this.actual,this.expected,this.msg,[this.deepEqual=false, this.strictEqual=false]);
-  success() {
-    if (strictEqual) return actual === expected;
-    if (!deepEqual) return actual == expected;
-    if (actual == null || expected == null || actual.length != expected.length) 
-      return false;
+/* 
+ * A minimal port of the QUnit subset that Underscore.js uses.
+ */
 
-    if (actual is Map) {
-      if (expected is! Map) return false;
-      for (var key in actual.getKeys()) 
-        if (actual[key] != expected[key]) return false;
-      return true; 
-    }
-    
-    int i=0;
-    return actual.every((x) => x == expected[i++]);
-  }
-}
 Map<String,Map<String,Function>> _moduleTests; 
-
 String _moduleName;
 module (name) {
   if (_moduleTests == null) _moduleTests = new Map<String,Map<String,Function>>();
@@ -58,7 +39,11 @@ raises(actualFn, expectedTypeFn, msg) {
   }
 }
 
-runAllTests(){
+runAllTests([bool hidePassedTests=false]){
+  int totalTests = 0;
+  int totalPassed = 0;
+  int totalFailed = 0;
+  Stopwatch sw = new Stopwatch.start();
   for (String moduleName in _moduleTests.getKeys()) {
     int testNo = 0;
     Map<String,Function> moduleTests = _moduleTests[moduleName];
@@ -77,19 +62,53 @@ runAllTests(){
       int total = _testAssertions.length;
       int failed = _testAssertions.filter((x) => !x.success()).length;
       int success = total - failed;
+
+      totalTests  += total;
+      totalFailed += failed;
+      totalPassed += success;
       
-      print("$testNo. $moduleName: $testName ($failed, $success, $total)");
+      if (!hidePassedTests || failed > 0) 
+        print("$testNo. $moduleName: $testName ($failed, $success, $total)");
       
       for (int i=0; i<_testAssertions.length; i++) {
-        Assertion assertion = _testAssertions[i]; 
-        print("  ${i+1} ${assertion.msg}");
-        if (assertion.expected is! bool)
-          print("    Expected ${assertion.expected}");
-        if (!assertion.success()) 
-          print("    FAILED was ${assertion.actual}");
+        Assertion assertion = _testAssertions[i];
+        bool fail = !assertion.success();
+        if (!hidePassedTests || fail) {
+          print("  ${i+1}. ${assertion.msg}");
+          if (assertion.expected is! bool)
+            print("     Expected ${assertion.expected}");
+        }
+        if (fail) 
+          print("     FAILED was ${assertion.actual}");
       }
       if (error != null) print(error);
     }
-    print("");
+    if (!hidePassedTests) print("");
+  }
+    
+  print("\nTests completed in ${sw.elapsedInMs()}ms");
+  print("$totalTests tests of $totalPassed passed, $totalFailed failed.");
+}
+
+class Assertion {
+  var actual, expected;
+  bool deepEqual,strictEqual;
+  String msg;
+  Assertion(this.actual,this.expected,this.msg,[this.deepEqual=false, this.strictEqual=false]);
+  success() {
+    if (strictEqual) return actual === expected;
+    if (!deepEqual) return actual == expected;
+    if (actual == null || expected == null || actual.length != expected.length) 
+      return false;
+
+    if (actual is Map) {
+      if (expected is! Map) return false;
+      for (var key in actual.getKeys()) 
+        if (actual[key] != expected[key]) return false;
+      return true; 
+    }
+    
+    int i=0;
+    return actual.every((x) => x == expected[i++]);
   }
 }

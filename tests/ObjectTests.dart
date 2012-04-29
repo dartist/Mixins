@@ -1,6 +1,5 @@
 #library("ObjectTests");
-#import("dart:json");
-#import("../TestSuite.dart");
+#import("../DUnit.dart");
 #import("../Mixin.dart");
 
 class B { run() {}}

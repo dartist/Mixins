@@ -1,5 +1,5 @@
 #library("UtilityTests");
-#import("../TestSuite.dart");
+#import("../DUnit.dart");
 #import("../Mixin.dart");
 
 UtilityTests() {
