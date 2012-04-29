@@ -1,17 +1,21 @@
 # DUnit.dart
 
 A minimal port of the QUnit subset that Underscore.js uses.
-The entire implementation fits in a single stand-alone [DUnit.dart] file that's an easy include.
+The entire implementation fits in a single stand-alone [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) file that's an easy include in any project.
 
 Includes a text output runner and basic support for these test primitves:
 
-module(moduleName):
- test(testName, testClosure):
-   equal(actual, expected, msg)
-   deepEqual(actual, expected, msg)
-   strictEqual(actual, expected, msg)
-   ok(bool, msg)
-   raises(closure, errorPredicate, msg)
+### API 
+
+    module(moduleName):
+
+       test(testName, testClosure):
+
+           equal(actual, expected, msg)
+           deepEqual(actual, expected, msg)
+           strictEqual(actual, expected, msg)
+           ok(bool, msg)
+           raises(closure, errorPredicate, msg)
 
 ### Example Usage:
 
@@ -83,7 +87,7 @@ Which will only show the tests that have failed:
 
 As maintaining large test suites in a single file can soon become unwieldy it is a good idea to split your
 tests into different modules by wrapping each module definition into their own functions thereby being able
-to import and run them in a single test runner. Here's the [MixinTestSuite.dart] for the DartMixin's project:
+to import and run them in a single test runner. Here's the [MixinTestSuite.dart](https://github.com/mythz/DartMixins/blob/master/tests/MixinTestSuite.dart) for the DartMixin's project:
 
     #import("../DUnit.dart");
     #import("ArrayTests.dart");
