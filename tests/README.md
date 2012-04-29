@@ -44,9 +44,9 @@ Just like in QUnit you define your tests declaratively in modules and test secti
         deepEqual($([1,2,3]).first(2), [100, 200], 'can pass an index to first'); //Fail example
     });
 
-Then you can run all the tests with:
+Then you can run all the tests with the top-level function:
 
-  runAllTests();    
+    runAllTests();    
 
 Which for the above tests will print this output:
 
