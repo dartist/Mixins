@@ -29,6 +29,7 @@ class Mixin {
     return _factories;
   }
   valueOf() => e;
+  int get length() => e.length;
   bool isEqual(to) => e == to;
   bool isElement() => e != null && e['nodeType'] == 1;
   bool isArray() => e is List;
@@ -170,6 +171,8 @@ class Num$ extends Mixin {
     this.target = target;
   }
 
+  static Num$ wrap(n) => new Num$(n);
+
   times(iterator(int n)) {
     for (int i = 0; i < e; i++) iterator(i);
   }    
@@ -184,14 +187,111 @@ class String$ extends Mixin {
         ? target 
         : "$target";
   }
+
+  static String$ wrap(string) => new String$(string);
   
   String escape() =>
-    '$e'.replaceAll(new RegExp("&"), '&amp;')
-        .replaceAll(new RegExp("<"), '&lt;')
-        .replaceAll(new RegExp(">"), '&gt;')
-        .replaceAll(new RegExp('"'), '&quot;')
-        .replaceAll(new RegExp("'"), '&#x27;')
-        .replaceAll(new RegExp('/'),'&#x2F;');
+    target.replaceAll(new RegExp("&"), '&amp;')
+          .replaceAll(new RegExp("<"), '&lt;')
+          .replaceAll(new RegExp(">"), '&gt;')
+          .replaceAll(new RegExp('"'), '&quot;')
+          .replaceAll(new RegExp("'"), '&#x27;')
+          .replaceAll(new RegExp('/'),'&#x2F;');
+
+  bool isBlank() => new RegExp(@"^\s*$").hasMatch(target);  
+  String trim() => target.trim();
+  String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
+  String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
+  List chars() => target.charCodes();
+  List lines() => target.split(new RegExp(@"\n"));
+
+  String clean() => trim().replaceAll(new RegExp(@"\s+"), ' ').trim();
+  
+  String titleize(){    
+    List arr = target.split(' ');
+    List to = new List();
+    for (var i=0; i < arr.length; i++) {
+      List word = arr[i].split('');      
+      if (word.length > 0 && word[0] != null) 
+        word[0] = word[0].toUpperCase();      
+      var val = (i+1 == arr.length)
+          ? List$.wrap(word).join('') 
+          : "${List$.wrap(word).join('')} ";
+       to.add(val);
+    }
+    return List$.wrap(to).join('');
+  }
+  
+  String replaceAllMatches(Pattern pattern, String f(Match)) {
+    StringBuffer sb = new StringBuffer();
+    int lastEnd = 0;
+    $(pattern.allMatches(target)).forEach(
+      (Match m) {
+        sb.add(target.substring(lastEnd, m.start()));
+        sb.add(f(m));
+        lastEnd = m.end();
+      });
+    sb.add(target.substring(lastEnd));
+    return sb.toString();
+  }
+
+  String underscored() => $(trim())
+     .replaceAllMatches(new RegExp(@"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}_${m.group(2)}")
+     .replaceAll(new RegExp(@"\-|\s+"), '_')
+     .replaceAll(new RegExp("-"), '_')
+     .toLowerCase();
+  
+  String dasherize() => $($(trim())
+    .replaceAllMatches(new RegExp(@"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}-${m.group(2)}"))
+    .replaceAllMatches(new RegExp("^([A-Z]+)"), (m) => '-${m.group(1)}')
+    .replaceAll(new RegExp(@"\_|\s+"), '-')
+    .toLowerCase();
+  
+  humanize() => wrap(underscored().replaceAll(new RegExp(@"_id$"),'').replaceAll("_", ' ')).capitalize();
+  
+  succ() => "${target.substring(0, target.length - 1)}${new String.fromCharCodes([target.charCodeAt(target.length - 1) + 1])}";
+
+  truncate(length, [String truncateStr='...']) => 
+      target.length > length ? "${target.substring(0,length)}$truncateStr" : target;
+      
+  List words([Pattern delimiter=" "]) => trim().replaceAll(new RegExp(@"\s+"), " ").split(delimiter);
+  String repeat([int times=0, String seperator='']) => _strRepeat(target, times, seperator);
+
+  static final int _PAD_LEFT = 1;
+  static final int _PAD_RIGHT = 2;
+  static final int _PAD_BOTH = 3;
+  
+  String pad(int length, [String padStr=null, int type]) {
+    String padding = '', str = target;
+    int padlen  = 0;
+
+    if (padStr == null) padStr = ' ';
+    else if (padStr.length > 1) padStr = padStr[0]; 
+    switch(type) {
+      case _PAD_LEFT:
+        padlen = (length - target.length);
+        padding = _strRepeat(padStr, padlen);
+        return "$padding$target";
+      case _PAD_RIGHT:
+        padlen = (length - target.length);
+        padding = _strRepeat(padStr, padlen);
+        return "$target$padding";
+      case _PAD_BOTH:
+        padlen = (length - str.length);
+        String _prefix  = _strRepeat(padStr, (padlen/2).ceil().toInt());
+        String _suffix = _strRepeat(padStr, (padlen/2).floor().toInt());
+        return "$_prefix$target$_suffix";
+    }
+  }
+
+  padLeft(int length, [String padStr]) => pad(length, padStr, _PAD_LEFT);
+  lpad(int length, [String padStr]) => pad(length, padStr, _PAD_LEFT);
+  padRight(int length, [String padStr]) => pad(length, padStr, _PAD_RIGHT);
+  rpad(int length, [String padStr]) => pad(length, padStr, _PAD_RIGHT);
+  padBoth(int length, [String padStr]) => pad(length, padStr, _PAD_BOTH);
+  lrpad(int length, [String padStr]) => pad(length, padStr, _PAD_BOTH);
+    
+  String reverse() => List$.wrap(List$.wrap(target.split('')).reverse()).join('');
   
   static String debugString(str) => 
     "$str".replaceAll("[", "")
@@ -275,7 +375,6 @@ class List$ extends Mixin {
   bool some([_Predicate match]) => target.some(match != null ? match : (x) => !_isFalsy(x));
   bool any([_Predicate match]) => some(match);
   bool isEmpty() => target.isEmpty();
-  int get length() => target.length;
   void add(item) => target.add(item);
   void addLast(item) => target.addLast(item);
   void addAll(Collection collection) => target.addAll(collection);
@@ -463,13 +562,27 @@ class Map$ extends Mixin {
   Map$(target) : super(target) {
     this.target = target == null ? {} : target;
   }
+
+  operator [](key) => target[key];
+  void operator []=(key, value) {
+    target[key] = value;
+  } 
   
   static Map$ wrap(e) => new Map$(e);
   
   Collection keys() => target.getKeys();
+  Collection getKeys() => target.getKeys();
   Collection values() => target.getValues();
+  Collection getValues() => target.getValues();
+
+  bool isEmpty() => target.isEmpty();    
+  bool containsKey() => target.containsKey(target);
+  bool has() => target.containsKey(target);
+  bool containsValue(item) => target.containsValue(item);
+  bool include(item) => target.containsValue(item);
+  bool contains(item) => include(item);
   
-  map(iterator(val)) {
+  Map map(iterator(val)) {
     Map res = {};    
     for (var key in target.getKeys()){
       res[key] = iterator(target[key]);
@@ -477,10 +590,8 @@ class Map$ extends Mixin {
     return res;
   }
 
-  clone() => _cloneMap(target);
+  Map clone() => _cloneMap(target);
   
-  include(item) => target.containsValue(item);
-  contains(item) => include(item);
   max([Expr expr]) => List$.wrap(target.getValues()).max(expr);
   min([Expr expr]) => List$.wrap(target.getValues()).min(expr);
 
@@ -515,10 +626,6 @@ class Map$ extends Mixin {
   }
 
 //  _.extend Requires Reflection  
-
-  isEmpty() => target.isEmpty();  
-  
-  has() => target.containsKey(target);
 }
 
 typedef IteratorFn(memo, value);
@@ -545,4 +652,8 @@ _cloneMap(Map from) {
     to[key] = from[key];
   return to;
 }
-
+_strRepeat(String str, int i, [String seperator='']) {
+  List to = new List(i);
+  for (; i > 0; to[--i] = i == 1 ? str : "$str$seperator") {}
+  return List$.wrap(to).join('');
+}

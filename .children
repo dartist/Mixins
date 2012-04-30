@@ -1,6 +1,7 @@
 tests/CollectionTests.dart
 Example.dart
 Mixin.dart
+tests/StringTests.dart
 tests/ArrayTests.dart
 tests/ObjectTests.dart
 tests/UtilityTests.dart
