@@ -7,15 +7,15 @@ Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 
 ### Download
 
-The entire library is contained within a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file which will be also made available on Dart's package manager once that's finished. Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) text-based test runner is also available to download separately.
+The entire library is contained within a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file. Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) text-based test runner is also available to download separately.
 
 ## Usage
 
-As the **_** character in Dart is a reserved prefix to denote library-only visibility we use **$** in its place to wrap a target object to apply _.underscores functions onto, e.g:
+As the **'_'** character in Dart is a reserved prefix to denote library-only visibility we use **'$'** in its place to wrap a target object to apply _.underscores functions onto, e.g:
 
     $([1,2,3]).max() -> 3
 
-Just like jQuery you wrap any object with `$(...)` to unlock all additional functionality relating to that object. Unlike jQuery `$()` returns a type-specific mixin class that is typed to the wrapped object, e.g:
+Just like jQuery you wrap any object with `$(...)` to unlock all additional functionality relating to that object. Unlike jQuery `$()` returns a type-specific mixin class based on the type of the wrapped object, e.g:
 
     $([])    -> new List$([])
     $({})    -> new Map$({})
@@ -34,9 +34,9 @@ Knowing this you can get intelli-sense from DartEditor by specifying the returne
     List$ list = $([1,2,3,4,5]);
     list.first(3) -> [1,2,3];    //intelli-sense
 
-Unlike jQuery (and like Underscore.js) mixin methods don't return a wrapped object so you can't chain your results like this:
+Unlike jQuery (and like Underscore.js) mixin methods **don't** return a wrapped object so you can't chain your results like this:
 
-    $([1,2,3,4,5]).first(3).sum()  //does NOT work
+    $([1,2,3,4,5]).first(3).sum()  //Warning does NOT work
 
 Instead you need to wrap the response to use mixins on the resulting results, e.g:
 
@@ -44,7 +44,7 @@ Instead you need to wrap the response to use mixins on the resulting results, e.
 
 ## API
 
-Most of the functions have been ported from [Underscore.js](http://documentcloud.github.com/underscore/) so you can refer to its website for API documentation for methods of the same name. As Dart doesn't yet support reflection or dynamically [invoking N-Arity functions](http://www.dartlang.org/articles/emulating-functions/) parts of Underscore like its Function, Currying and templating utils haven't yet been ported. 
+Most of the functions have been ported from [Underscore.js](http://underscorejs.org). As Dart doesn't yet support reflection or dynamically [invoking N-Arity functions](http://www.dartlang.org/articles/emulating-functions/) parts of Underscore like its Function, Currying and templating utils have not yet been ported over. 
 
 The full list of methods
 
@@ -193,7 +193,7 @@ The full list of methods
 
 ## Adding your own mixins
 
-In addition to the above you may also want to have your own utility functions accessible from `$` (as done with jQuery plugins or Underscores mixins) which will make them more discoverable and less verbose than using common static class functions, they are also more testable since they can be mocked with stub methods inside tests.
+In addition to the above you may also want to have your own utility functions accessible from `$` (as done with jQuery plugins or Underscores mixins) which will make them more discoverable and less verbose than using common static class functions, they are also more testable since they can be mocked with stub methods, like inside tests.
 
 There are a couple of hooks available that will let you plug in your own mixins. 
 
