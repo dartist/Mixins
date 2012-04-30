@@ -242,8 +242,9 @@ Which is exactly what is happening behind the scenes.
 
 ### Adding via pull-request
 
-A more permanent way to add your utility methods is to submite them via a Github pull-request :) 
-If your utility methods are useful and have broad appeal we'd love to include them. Please include tests with all code contributions.
+A more permanent way to add your utility methods is to submit them via a Github pull-request :) 
+
+If your utility methods are useful and have broad appeal we'd love to include them (with tests!).
 
 ## The need for Mixins
 
