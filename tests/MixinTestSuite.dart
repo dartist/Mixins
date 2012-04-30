@@ -8,11 +8,11 @@
 
 main(){
   MixinTests();
-//  ObjectTests();
-//  CollectionTests();
-//  ArrayTests();
-//  UtilityTests();
-//  StringTests();
+  ObjectTests();
+  CollectionTests();
+  ArrayTests();
+  UtilityTests();
+  StringTests();
   
-  runAllTests(hidePassedTests:true);
+  runAllTests(hidePassedTests:false);
 }

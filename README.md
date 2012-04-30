@@ -3,13 +3,15 @@ Dart Mixins
 
 This library provides [Dart](http://www.dartlang.org) extensible Mixin-like capabilities in a jQuery-like interface and includes most of the functional utils ported from the popular [Underscore.js](https://github.com/documentcloud/underscore) library. 
 
+Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
+
 ### Download
 
-The entire library is contained within a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file which will be also made available on Dart's package manager once that's finished.
+The entire library is contained within a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file which will be also made available on Dart's package manager once that's finished. Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) text-based test runner is also available to download separately.
 
 ## Usage
 
-As the **_** character in Dart is a reserved prefix to denote library-only visibility we use **$** in its place to wrap a target object to apply underscores methods onto, e.g:
+As the **_** character in Dart is a reserved prefix to denote library-only visibility we use **$** in its place to wrap a target object to apply _.underscores functions onto, e.g:
 
     $([1,2,3]).max() -> 3
 
