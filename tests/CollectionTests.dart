@@ -302,5 +302,14 @@ CollectionTests() {
     equal($({'one': 1, 'two': 2, 'three': 3}).size(), 3, 'can compute the size of an object');
     equal($([1, 2, 3]).size(), 3, 'can compute the size of an array');
   });
+  
+  test('collections: insert', (){
+    List chars = ['b','c','d'];
+    $(chars).insert(0, 'a');
+    deepEqual(chars, ['a','b','c','d'], 'can insert at start of the list');
+    chars = ['b','c','d'];
+    $(chars).insert(chars.length, 'e');
+    deepEqual(chars, ['b','c','d','e'], 'can insert at end of the list');
+  });
 
 }

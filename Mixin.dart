@@ -28,6 +28,13 @@ class Mixin {
     }
     return _factories;
   }
+  
+  /* Register your own factory. 
+   * New factory is given the first opportunity to handle new invocations of $(). 
+   * Return a wrapped Mixin if target is a match; otherwise null to let other factories handle object.  
+   */
+  static void registerFactory(Mixin factory(target)) => factories.insertRange(0, 1, factory);
+  
   valueOf() => e;
   int get length() => e.length;
   bool isEqual(to) => e == to;
@@ -207,6 +214,19 @@ class String$ extends Mixin {
 
   String clean() => trim().replaceAll(new RegExp(@"\s+"), ' ').trim();
   
+  String replaceAllMatches(Pattern pattern, String f(Match)) {
+    StringBuffer sb = new StringBuffer();
+    int lastEnd = 0;
+    $(pattern.allMatches(target)).forEach(
+      (Match m) {
+        sb.add(target.substring(lastEnd, m.start()));
+        sb.add(f(m));
+        lastEnd = m.end();
+      });
+    sb.add(target.substring(lastEnd));
+    return sb.toString();
+  }
+
   String titleize(){    
     List arr = target.split(' ');
     List to = new List();
@@ -222,19 +242,6 @@ class String$ extends Mixin {
     return List$.wrap(to).join('');
   }
   
-  String replaceAllMatches(Pattern pattern, String f(Match)) {
-    StringBuffer sb = new StringBuffer();
-    int lastEnd = 0;
-    $(pattern.allMatches(target)).forEach(
-      (Match m) {
-        sb.add(target.substring(lastEnd, m.start()));
-        sb.add(f(m));
-        lastEnd = m.end();
-      });
-    sb.add(target.substring(lastEnd));
-    return sb.toString();
-  }
-
   String underscored() => $(trim())
      .replaceAllMatches(new RegExp(@"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}_${m.group(2)}")
      .replaceAll(new RegExp(@"\-|\s+"), '_')
@@ -255,6 +262,7 @@ class String$ extends Mixin {
       target.length > length ? "${target.substring(0,length)}$truncateStr" : target;
       
   List words([Pattern delimiter=" "]) => trim().replaceAll(new RegExp(@"\s+"), " ").split(delimiter);
+  
   String repeat([int times=0, String seperator='']) => _strRepeat(target, times, seperator);
 
   static final int _PAD_LEFT = 1;
@@ -319,6 +327,7 @@ class List$ extends Mixin {
   List get value() => target;
   num sum() => reduce((memo, value) => memo + value, 0);
   List clone() => _cloneList(target);
+  void insert(int index, item) => target.insertRange(index, 1, item);      
   
   List reverse() {
     List to = new List();

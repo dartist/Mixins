@@ -35,14 +35,6 @@ UtilityTests() {
     deepEqual(vals, [0,1,2], "works as a wrapper");
   });
 
-  test("utility: mixin", () {
-    Mixin.mixin({
-      'myReverse': (string) => $($(string.splitChars()).reverse()).join('')
-    });
-    equal($('panacea').myReverse(), 'aecanap', 'mixed in a function to _');
-    equal($('champ').myReverse(), 'pmahc', 'mixed in a function to the OOP wrapper');
-  });
-
   test("utility: _.escape", () {
     equal($("Curly & Moe").escape(), "Curly &amp; Moe", "does escape");
     equal($("Curly &amp; Moe").escape(), "Curly &amp;amp; Moe", "does double escape");

@@ -142,5 +142,5 @@ StringTests(){
     equal($('123').repeat(2), '123123', 'does number');
     equal($('1234').repeat(2, '*'), '1234*1234', 'does with seperator');
   });
-  
+
 }
