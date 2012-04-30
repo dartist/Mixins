@@ -1,13 +1,13 @@
 Dart Mixins
 ===========
 
-This library provides [Dart](http://www.dartlang.org) extensible Mixin-like capabilities in a jQuery-like interface and includes most of the functional utils ported from the popular [Underscore.js](https://github.com/documentcloud/underscore) library. 
+This [Dart](http://www.dartlang.org) project includes most utils from the popular [Underscore.js](https://github.com/documentcloud/underscore) library via a jQuery-like interface. It also provides Mixin-like capabilities allowing run-time extensibility of its API with custom functions.
 
 Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 
 ### Download
 
-The entire library is contained within a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file. Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) text-based test runner is also available to download separately.
+The entire library is maintained in a single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file. Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight, text-based [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) test runner used is also available to download separately.
 
 ## Usage
 
