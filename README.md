@@ -25,16 +25,16 @@ Just like jQuery you wrap any object with `$(...)` to unlock all additional func
     $(mixin) -> mixin
 
 Where all mixin classes inherit the `Mixin` base type.
-So passing in an array returns an instance of `List$` where all its instance methods apply to the wrapped object.
+So passing in an array returns an instance of `List$` with all its methods applying to the wrapped object.
 
     $([1,2,3,4,5]).first(3) -> [1,2,3]
 
-Knowing this you can get intelli-sense from DartEditor by specifying the returned type, e.g:
+This allows you to get intelli-sense from the DartEditor by specifying the returned type, e.g:
 
     List$ list = $([1,2,3,4,5]);
     list.first(3) -> [1,2,3];    //intelli-sense
 
-Unlike jQuery (and like Underscore.js) mixin methods **don't** return a wrapped object so you can't chain your results like this:
+Unlike jQuery (and like Underscore.js) mixin methods **do not** return a wrapped object so you can't chain your results like this:
 
     $([1,2,3,4,5]).first(3).sum()  //Warning does NOT work
 
