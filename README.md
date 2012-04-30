@@ -193,7 +193,7 @@ The full list of methods
 
 ## Adding your own mixins
 
-In addition to the above you may also want to have your own utility functions accessible from `$` (as done with jQuery plugins or Underscores mixins) which will make them more discoverable and less verbose than using common static class functions, they are also more testable since they can be mocked with stub methods, like inside tests.
+In addition to the above you may also want to have your own utility functions accessible from `$` (as done with jQuery plugins or Underscores mixins) which will make them more discoverable and less verbose than using common static class functions, they're also more testable since they can be mocked with stub methods in tests.
 
 There are a couple of hooks available that will let you plug in your own mixins. 
 
