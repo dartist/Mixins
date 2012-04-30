@@ -297,7 +297,7 @@ Contributions to this project in code, tests, issues, wikis, etc are welcome.
 
 ### Contributors
 
-  - [https://github.com/mythz](Demis Bellot)
+  - [mythz](https://github.com/mythz) (Demis Bellot)
 
 ### Future
 
