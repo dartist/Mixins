@@ -21,6 +21,7 @@ Just like jQuery you wrap any object with `$(...)` to unlock all additional func
     $({})    -> new Map$({})
     $("")    -> new String$("")
     $(0)     -> new Num$(0)
+    $((){})  -> new Function$((){})
     $(null)  -> new Mixin(null)
     $(mixin) -> mixin
 
@@ -148,6 +149,18 @@ The full list of methods
 ### Num$ API
 
     times()
+
+    static:
+      fn()
+
+### Function$ API
+
+    invoke()
+    memoize()
+    once()
+    wrap()
+    compose()
+    after()
 
     static:
       fn()
