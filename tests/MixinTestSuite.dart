@@ -5,6 +5,7 @@
 #import("ObjectTests.dart");
 #import("UtilityTests.dart");
 #import("StringTests.dart");
+#import("FunctionTests.dart");
 
 main(){
   MixinTests();
@@ -13,6 +14,7 @@ main(){
   ArrayTests();
   UtilityTests();
   StringTests();
+  FunctionTests();
   
   runAllTests(hidePassedTests:false);
 }

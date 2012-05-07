@@ -23,6 +23,7 @@ class Mixin {
         (target) => target is Map ? new Map$(target) : null,
         (target) => target is String ? new String$(target) : null,
         (target) => target is num ? new Num$(target) : null,
+        (target) => target is Function ? new Function$(target) : null,
         (target) => new Mixin(target),
       ];
     }
@@ -84,14 +85,14 @@ class Mixin {
       if (memo == null)
         throw new TypeError$('Reduce of empty array with no initial value');
       else return memo;
-    return List$.wrap(e).reduce(f,memo);
+    return List$.fn(e).reduce(f,memo);
   }
   void foldl(f(x,y), [memo]) => reduce(f,memo);
   void inject(f(x,y), [memo]) => reduce(f,memo);
   
   reduceRight(f(x,y), [memo]) => e == null 
       ? reduce(f,memo) //same behavior if null
-      : List$.wrap(e).reduceRight(f,memo);  
+      : List$.fn(e).reduceRight(f,memo);  
   void foldr(f(x,y), [memo]) => reduceRight(f,memo);
   
   static int _idCounter = 0;
@@ -123,7 +124,7 @@ class Mixin {
   static Map _mixins;
   static void mixin (obj) {
     if (_mixins == null) _mixins = {}; //TODO: remove after Dart gets static lazy initialization
-    Map$.wrap(obj).functions().forEach((name){
+    Map$.fn(obj).functions().forEach((name){
       _mixins[name] = obj[name];
     });
   }
@@ -167,7 +168,7 @@ class Mixin {
   tap(Expr interceptor) {
     interceptor(e);
     return e;
-  }  
+  }
     
   String toDebugString() => String$.debugString(e);
 }
@@ -178,7 +179,7 @@ class Num$ extends Mixin {
     this.target = target;
   }
 
-  static Num$ wrap(n) => new Num$(n);
+  static Num$ fn(n) => new Num$(n);
 
   times(iterator(int n)) {
     for (int i = 0; i < e; i++) iterator(i);
@@ -195,7 +196,7 @@ class String$ extends Mixin {
         : "$target";
   }
 
-  static String$ wrap(string) => new String$(string);
+  static String$ fn(string) => new String$(string);
   
   String escape() =>
     target.replaceAll(new RegExp("&"), '&amp;')
@@ -235,11 +236,11 @@ class String$ extends Mixin {
       if (word.length > 0 && word[0] != null) 
         word[0] = word[0].toUpperCase();      
       var val = (i+1 == arr.length)
-          ? List$.wrap(word).join('') 
-          : "${List$.wrap(word).join('')} ";
+          ? List$.fn(word).join('') 
+          : "${List$.fn(word).join('')} ";
        to.add(val);
     }
-    return List$.wrap(to).join('');
+    return List$.fn(to).join('');
   }
   
   String underscored() => $(trim())
@@ -254,7 +255,7 @@ class String$ extends Mixin {
     .replaceAll(new RegExp(@"\_|\s+"), '-')
     .toLowerCase();
   
-  humanize() => wrap(underscored().replaceAll(new RegExp(@"_id$"),'').replaceAll("_", ' ')).capitalize();
+  humanize() => fn(underscored().replaceAll(new RegExp(@"_id$"),'').replaceAll("_", ' ')).capitalize();
   
   succ() => "${target.substring(0, target.length - 1)}${new String.fromCharCodes([target.charCodeAt(target.length - 1) + 1])}";
 
@@ -299,7 +300,7 @@ class String$ extends Mixin {
   padBoth(int length, [String padStr]) => pad(length, padStr, _PAD_BOTH);
   lrpad(int length, [String padStr]) => pad(length, padStr, _PAD_BOTH);
     
-  String reverse() => List$.wrap(List$.wrap(target.split('')).reverse()).join('');
+  String reverse() => List$.fn(List$.fn(target.split('')).reverse()).join('');
   
   static String debugString(str) => 
     "$str".replaceAll("[", "")
@@ -323,7 +324,7 @@ class List$ extends Mixin {
     target[index] = value;
   } 
 
-  static List$ wrap(list) => new List$(list);
+  static List$ fn(list) => new List$(list);
   List get value() => target;
   num sum() => reduce((memo, value) => memo + value, 0);
   List clone() => _cloneList(target);
@@ -358,7 +359,7 @@ class List$ extends Mixin {
   foldl(IteratorFn iterator,  [memo]) => reduce(iterator, memo); 
   inject(IteratorFn iterator, [memo]) => reduce(iterator, memo); 
 
-  reduceRight(IteratorFn iterator, [memo]) => wrap(reverse()).reduce(iterator, memo);
+  reduceRight(IteratorFn iterator, [memo]) => fn(reverse()).reduce(iterator, memo);
   foldr(IteratorFn iterator, [memo]) => reduceRight(iterator, memo); 
   
   single(_Predicate match) {
@@ -441,8 +442,8 @@ class List$ extends Mixin {
   sortBy(val) {
     List l = [2,3,4];
     Function iterator = val is Function ? val : (obj) => obj[val];
-    return wrap(
-      wrap(
+    return fn(
+      fn(
         map((value) => {
           'value': value,
           'criteria': iterator(value)
@@ -500,7 +501,7 @@ class List$ extends Mixin {
   List flatten([shallow=false]) {
     return reduce((List memo, value) {
       if (value is List) 
-        memo.addAll(shallow ? value : wrap(value).flatten());
+        memo.addAll(shallow ? value : fn(value).flatten());
       else 
         memo.add(value);
       return memo;
@@ -513,7 +514,7 @@ class List$ extends Mixin {
     // The `isSorted` flag is irrelevant if the array only contains two elements.
     if (target.length < 3) isSorted = true;
     int index = 0;
-    wrap(init).reduce((List memo, value) {
+    fn(init).reduce((List memo, value) {
       bool exists = isSorted ? memo.length == 0 || memo.last() != value : memo.indexOf(value) == -1;
       if (exists) {
         memo.add(value);
@@ -543,14 +544,14 @@ class List$ extends Mixin {
   intersect(List<List> with) => intersection(with);
   
   difference(List<List> with) {
-    List _rest = wrap(with).flatten(true);
-    return filter((value) => !wrap(_rest).include(value) );
+    List _rest = fn(with).flatten(true);
+    return filter((value) => !fn(_rest).include(value) );
   }
   without(List<List> with) => difference(with);
-  union(List<List> with) => wrap(wrap(concat([target,with])).flatten(true)).uniq();
+  union(List<List> with) => fn(fn(concat([target,with])).flatten(true)).uniq();
   
   static zip(List args) {
-    int length = wrap(args.map((x) => x.length)).max();
+    int length = fn(args.map((x) => x.length)).max();
     List results = new List(length);
     var $args = $(args);
     for (int i = 0; i < length; i++) results[i] = $args.map((x) => i < x.length ? x[i] : null);
@@ -577,7 +578,7 @@ class Map$ extends Mixin {
     target[key] = value;
   } 
   
-  static Map$ wrap(e) => new Map$(e);
+  static Map$ fn(e) => new Map$(e);
   
   Collection keys() => target.getKeys();
   Collection getKeys() => target.getKeys();
@@ -601,8 +602,8 @@ class Map$ extends Mixin {
 
   Map clone() => _cloneMap(target);
   
-  max([Expr expr]) => List$.wrap(target.getValues()).max(expr);
-  min([Expr expr]) => List$.wrap(target.getValues()).min(expr);
+  max([Expr expr]) => List$.fn(target.getValues()).max(expr);
+  min([Expr expr]) => List$.fn(target.getValues()).min(expr);
 
   List functions() {
     List<String> names = [];
@@ -637,6 +638,66 @@ class Map$ extends Mixin {
 //  _.extend Requires Reflection  
 }
 
+class Function$ extends Mixin {
+  Function target;
+  Function$(target) : super(target) {
+    this.target = target == null ? {} : target;
+  }
+
+  static Function$ fn(e) => new Function$(e);
+  
+  invoke([arg1, arg2, arg3, arg4]) => _call(target, arg1, arg2, arg3, arg4);
+    
+  memoize([Function hasher]) {
+    Map memo = {};
+    if (hasher == null) hasher = Mixin.identity;
+    return ([arg1, arg2, arg3, arg4]) {
+      var key = _call(hasher, arg1, arg2, arg3, arg4);
+      return memo.containsKey(key) ? memo[key] : (memo[key] = _call(target, arg1, arg2, arg3, arg4));
+    };
+  }
+  
+  //requires core:Timer
+//  delay(Function func, int waitMs) => null;    
+//  defer(Function func) => delay(func, 1);
+//  throttle(Function func, int waitMs) => null;
+//  debounce(Function func, int waitMs, bool immediate) => null;
+  
+  once() {
+    bool ran = false;
+    var memo;
+    return ([arg1, arg2, arg3, arg4]) {
+      if (ran) return memo;
+      ran = true;
+      return memo = _call(target, arg1, arg2, arg3, arg4);
+    };
+  }
+  
+  wrap(wrapper) => ([arg1, arg2, arg3]) => _call(wrapper, target, arg1, arg2, arg3);
+
+  compose(Function f1, [Function f2, Function f3, Function f4]) {
+    List funcs = [target,f1];
+    if (f2 != null) funcs.add(f2);
+    if (f3 != null) funcs.add(f3);
+    if (f4 != null) funcs.add(f4);
+    return ([arg]) {
+      List args = [arg];
+      for (int i = funcs.length - 1; i >= 0; i--) {
+        args = [_call(funcs[i], args[0])];
+      }
+      return args[0];
+    };
+  }
+  
+  after(int times) {
+    if (times <= 0) return target();
+    return ([arg1, arg2, arg3, arg4]) {
+      if (--times < 1) return _call(target, arg1, arg2, arg3, arg4); 
+    };
+  }
+  
+}
+
 typedef IteratorFn(memo, value);
 typedef bool _Predicate(item);
 typedef Dynamic Expr(item);
@@ -664,5 +725,16 @@ _cloneMap(Map from) {
 _strRepeat(String str, int i, [String seperator='']) {
   List to = new List(i);
   for (; i > 0; to[--i] = i == 1 ? str : "$str$seperator") {}
-  return List$.wrap(to).join('');
+  return List$.fn(to).join('');
+}
+_call(func, [arg1, arg2, arg3, arg4]) {
+  return arg4 != null ? 
+      func(arg1, arg2, arg3, arg4)
+    : arg3 != null ? 
+      func(arg1, arg2, arg3)
+    : arg2 != null ? 
+      func(arg1, arg2)
+    : arg1 != null ? 
+      func(arg1) : 
+      func();
 }

@@ -93,7 +93,7 @@ The full list of methods
     join()
 
     static:
-      wrap()
+      fn()
       concat()
       zip()
 
@@ -115,7 +115,7 @@ The full list of methods
     isEmpty()
 
     static:
-      wrap()
+      fn()
 
 ### String$ API
 
@@ -142,7 +142,7 @@ The full list of methods
     reverse()
 
     static:
-      wrap()
+      fn()
       debugString()
 
 ### Num$ API
@@ -150,7 +150,7 @@ The full list of methods
     times()
 
     static:
-      wrap()
+      fn()
 
 ### Mixin API (base class)
 

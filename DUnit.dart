@@ -98,17 +98,27 @@ class Assertion {
   success() {
     if (strictEqual) return actual === expected;
     if (!deepEqual) return actual == expected;
-    if (actual == null || expected == null || actual.length != expected.length) 
-      return false;
-
-    if (actual is Map) {
-      if (expected is! Map) return false;
-      for (var key in actual.getKeys()) 
-        if (actual[key] != expected[key]) return false;
-      return true; 
-    }
-    
-    int i=0;
-    return actual.every((x) => x == expected[i++]);
+    return _eq(actual, expected);
   }
+}
+
+_eq(actual, expected) {
+  if (actual == null || expected == null) 
+    return actual == expected;
+   
+  if (actual is Map) {
+    if (expected is! Map) return false;
+    if (actual.length != expected.length) return false;
+    for (var key in actual.getKeys()) 
+      if (!_eq(actual[key], expected[key])) return false;
+    return true; 
+  }
+  else if (actual is List) {
+    if (expected is! List) return false;
+    if (actual.length != expected.length) return false;
+    int i=0;
+    return actual.every((x) => _eq(x, expected[i++]));  
+  }
+  
+  return actual == expected;
 }
