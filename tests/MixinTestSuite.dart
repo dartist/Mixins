@@ -16,5 +16,5 @@ main(){
   StringTests();
   FunctionTests();
   
-  runAllTests(hidePassedTests:false);
+  runAllTests(hidePassedTests:true);
 }

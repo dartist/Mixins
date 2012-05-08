@@ -301,7 +301,27 @@ class String$ extends Mixin {
   lrpad(int length, [String padStr]) => pad(length, padStr, _PAD_BOTH);
     
   String reverse() => List$.fn(List$.fn(target.split('')).reverse()).join('');
+ 
+  List split(Pattern pattern) => target.split(pattern);
   
+  List<String> splitOnFirst(String needle){
+    int pos;
+    return needle == null ? 
+        []
+      : (pos = target.indexOf(needle)) == -1 ?
+        [target] :
+        [target.substring(0, pos), target.substring(pos)];
+  }
+      
+  List<String> splitOnLast(String needle){
+    int pos;
+    return needle == null ? 
+        []
+      : (pos = target.lastIndexOf(needle)) == -1 ?
+        [target] :
+        [target.substring(0, pos + 1), target.substring(pos + 1)];
+  }
+          
   static String debugString(str) => 
     "$str".replaceAll("[", "")
           .replaceAll("]", "")

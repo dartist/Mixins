@@ -141,6 +141,9 @@ The full list of methods
     padRight()      aliases: rpad
     padBoth()       aliases: lrpad
     reverse()
+    split()
+    splitOnFirst()
+    splitOnLast()
 
     static:
       fn()
