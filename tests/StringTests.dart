@@ -144,14 +144,14 @@ StringTests(){
   });
   
   test('Strings: splitOnFirst', (){
-    deepEqual($("/a/test/path").splitOnFirst("/"), ["","/a/test/path"], "can split on first char");
-    deepEqual($("a/test/path").splitOnFirst("/"), ["a","/test/path"], "can split on string with multiple matches");
+    deepEqual($("/a/test/path").splitOnFirst("/"), ["","a/test/path"], "can split on first char");
+    deepEqual($("a/test/path").splitOnFirst("/"), ["a","test/path"], "can split on string with multiple matches");
     deepEqual($("a/test/path").splitOnFirst("_"), ["a/test/path"], "unmatched leaves string in-tact");
   });
   
   test('Strings: splitOnLast', (){
-    deepEqual($("a/test/path/").splitOnLast("/"), ["a/test/path/",""], "can split on last char");
-    deepEqual($("a/test/path").splitOnLast("/"), ["a/test/","path"], "can split on string with multiple matches");
+    deepEqual($("a/test/path/").splitOnLast("/"), ["a/test/path",""], "can split on last char");
+    deepEqual($("a/test/path").splitOnLast("/"), ["a/test","path"], "can split on string with multiple matches");
     deepEqual($("a/test/path").splitOnLast("_"), ["a/test/path"], "unmatched leaves string in-tact");
   });
 

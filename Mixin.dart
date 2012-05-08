@@ -310,7 +310,7 @@ class String$ extends Mixin {
         []
       : (pos = target.indexOf(needle)) == -1 ?
         [target] :
-        [target.substring(0, pos), target.substring(pos)];
+        [target.substring(0, pos), target.substring(pos + 1)];
   }
       
   List<String> splitOnLast(String needle){
@@ -319,7 +319,7 @@ class String$ extends Mixin {
         []
       : (pos = target.lastIndexOf(needle)) == -1 ?
         [target] :
-        [target.substring(0, pos + 1), target.substring(pos + 1)];
+        [target.substring(0, pos), target.substring(pos + 1)];
   }
           
   static String debugString(str) => 
