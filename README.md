@@ -114,6 +114,7 @@ The full list of methods
     pick()
     defaults()
     isEmpty()
+    addAll()
 
     static:
       fn()
