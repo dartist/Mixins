@@ -7,21 +7,27 @@ Includes a text output runner and basic support for these test primitves:
 
 ### API 
 
-    module(moduleName):
+    module(moduleName,[Function startup, Function teardown]):
 
        test(testName, testClosure):
+       asyncTest(testName, testClosure):
 
            equal(actual, expected, msg)
+           notEqual(actual, expected, msg)
            deepEqual(actual, expected, msg)
+           notDeepEqual(actual, expected, msg)
            strictEqual(actual, expected, msg)
+           notStrictEqual(actual, expected, msg)
            ok(bool, msg)
+           isNull(actual,msg)
+           isNotNull(actual,msg)
            raises(closure, errorPredicate, msg)
 
 ### Example Usage:
 
 Just like in QUnit you define your tests declaratively in modules and test sections:
 
-    module("Utility");  
+    module("Utility", startup:(callback) { print("on each test..."); callback(); });  
 
     test("utility: times", () {
         var vals = [];
