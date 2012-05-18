@@ -10,10 +10,12 @@ Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 This will be made available on the Dart Package Manager when its ready, until then you can easily make use of this library by adding it as a submodule at your projects root:
 
     git submodule add git@github.com:mythz/DartMixins.git vendor/Mixins
-
-Note: you can pull future updates on the client with a git pull in the submodule directory, e.g:
-
     cd vendor/Mixins
+    git submodule init
+    git submodule update    
+
+Then you can pull future project updates with a git pull in the submodule directory, e.g:
+
     git pull origin master    
 
 If you prefer not to add a submodule you can just copy the single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file. 
