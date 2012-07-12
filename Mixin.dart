@@ -426,7 +426,7 @@ class List$ extends Mixin {
   static final int MaxInt = 2^32-1;
   Date MinDate; //TODO: use lazy static initialization when available
   max([Expr expr]) {
-    if (MinDate == null) MinDate = new Date.fromEpoch(0, new TimeZone.utc());
+    if (MinDate == null) MinDate = new Date.fromMillisecondsSinceEpoch(0, isUtc: true);
     if (isEmpty()) return double.NEGATIVE_INFINITY;
     var firstArg = target[0];
     var res = {'computed': firstArg is Date ? MinDate : double.NEGATIVE_INFINITY};
@@ -440,7 +440,7 @@ class List$ extends Mixin {
   Date MaxDate; //TODO: use lazy static initialization when available
   min([Expr expr]) {
     if (isEmpty()) return double.INFINITY;
-    if (MaxDate == null) MaxDate = new Date.fromEpoch(MaxInt, new TimeZone.utc());
+    if (MaxDate == null) MaxDate = new Date.fromMillisecondsSinceEpoch(MaxInt, isUtc: true);
     var firstArg = target[0];
     var res = {'computed': firstArg is Date ? MaxDate : double.INFINITY};
     each((value) {
