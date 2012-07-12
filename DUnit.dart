@@ -140,7 +140,7 @@ runAllTests([bool hidePassedTests=false]){
 
       Function startup = _modulesStartup[moduleName];
       if (startup != null) {
-        startup(([_]) => _test.func());
+        startup(([k]) => _test.func());
       }
       else {
         _test.func();

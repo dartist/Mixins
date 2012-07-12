@@ -489,7 +489,7 @@ ObjectTests() {
   test("objects: isDate", () {
     ok(!$(100).isDate(), 'numbers are not dates');
     ok(!$({}).isDate(), 'objects are not dates');
-    ok($(new Date.fromEpoch(0, new TimeZone.utc())).isDate(), 'but dates are');
+    ok($(new Date.fromMillisecondsSinceEpoch(0, isUtc: true)).isDate(), 'but dates are');
 //    ok(_.isDate(iDate), 'even from another frame');
   });
 
