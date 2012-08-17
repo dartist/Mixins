@@ -1,6 +1,13 @@
 Dart Mixins
 ===========
 
+## Update - 17 Aug 20112
+
+The Dart team have now published their [proposal for Mixins](http://news.dartlang.org/2012/08/darts-modest-proposal-for-mixins.html).
+Once it's available the useful Underscore utilities from this project will be re-factored to fit within the future Mixins support.
+
+## Intro
+
 This [Dart](http://www.dartlang.org) project includes most utils from the popular [Underscore.js](https://github.com/documentcloud/underscore) library via a jQuery-like interface. It also provides Mixin-like capabilities allowing run-time extensibility of its API with custom functions.
 
 Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
