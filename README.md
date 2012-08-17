@@ -1,7 +1,7 @@
 Dart Mixins
 ===========
 
-## Update - 17 Aug 20112
+## Update - 17 Aug 2012
 
 The Dart team have now published their [proposal for Mixins](http://news.dartlang.org/2012/08/darts-modest-proposal-for-mixins.html).
 Once it's available the useful Underscore utilities from this project will be re-factored to fit within the future Mixins support.
