@@ -1,4 +1,4 @@
-#library("DUnit");
+library DUnit;
 
 /*
  * A minimal port of the QUnit subset that Underscore.js uses.
@@ -64,10 +64,11 @@ raises(actualFn, expectedTypeFn, msg) {
     _testAssertions.add(new Assertion(actual,"expected error",msg));
   }
   catch (final e) {
-    if (expectedTypeFn(e))
+    if (expectedTypeFn(e)) {
       _testAssertions.add(new Assertion(true,true,msg));
-    else
+    } else {
       _testAssertions.add(new Assertion(e,"wrong error type",msg));
+    }
   }
 }
 
@@ -116,19 +117,22 @@ runAllTests([bool hidePassedTests=false]){
       totalFailed += failed;
       totalPassed += success;
 
-      if (!hidePassedTests || failed > 0)
+      if (!hidePassedTests || failed > 0) {
         print("$testNo. $moduleName: $testName ($failed, $success, $total)");
+      }
 
       for (int i=0; i<_testAssertions.length; i++) {
         Assertion assertion = _testAssertions[i];
         bool fail = !assertion.success();
         if (!hidePassedTests || fail) {
           print("  ${i+1}. ${assertion.msg}");
-          if (assertion.expected is! bool)
+          if (assertion.expected is! bool) {
             print("     Expected ${assertion.expected}");
+          }
         }
-        if (fail)
+        if (fail) {
           print("     FAILED was ${assertion.actual}");
+        }
       }
       if (error != null) print(error);
       Function teardown = _modulesTeardown[moduleName];
@@ -163,7 +167,7 @@ class Assertion {
   String msg;
   Assertion(this.actual,this.expected,this.msg,[this.deepEqual=false, this.strictEqual=false,this.notEqual=false]);
   success() {
-    if (strictEqual) return notEqual ? actual !== expected : actual === expected;
+    if (strictEqual) return notEqual ? !identical(actual, expected) : identical(actual, expected);
     if (!deepEqual) return notEqual ? actual != expected : actual == expected;
     bool isEqual = _eq(actual, expected);
     return notEqual ? !isEqual : isEqual;
@@ -171,8 +175,9 @@ class Assertion {
 }
 
 _eq(actual, expected) {
-  if (actual == null || expected == null)
+  if (actual == null || expected == null) {
     return actual == expected;
+  }
 
   if (actual is Map) {
     if (expected is! Map) return false;

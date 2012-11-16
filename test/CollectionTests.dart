@@ -1,6 +1,6 @@
-#library("CollectionTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library CollectionTests;
+import "../DUnit.dart";
+import "../Mixin.dart";
 
 CollectionTests() {
 
@@ -87,7 +87,7 @@ CollectionTests() {
     }
     ok(ifnull is TypeError$, 'handles a null (without inital value) properly');
 
-    ok($(null).reduce((x,y){}, 138) === 138, 'handles a null (with initial value) properly');
+    ok($(null).reduce((x,y){}, 138) == 138, 'handles a null (with initial value) properly');
 //    equal($([]).reduce((x,y){}, null), null, 'undefined can be passed as a special case');
 //    raises(function() { _.reduce([], function(){}); }, TypeError, 'throws an error for empty arrays with no initial value');
 
@@ -285,15 +285,15 @@ CollectionTests() {
 //    ok(!_.isArray(arguments), 'arguments object is not an array');
 //    ok(_.isArray(_.toArray(arguments)), 'arguments object converted into array');
     var a = [1,2,3];
-    ok($(a).toArray() !== a, 'array is cloned');
+    ok(!identical($(a).toArray(), a), 'array is cloned');
     equal($($(a).toArray()).join(', '), '1, 2, 3', 'cloned array contains same elements');
 
     var numbers = $({'one': 1, 'two': 2, 'three': 3}).toArray();
     equal($(numbers).join(', '), '1, 2, 3', 'object flattened into array');
-    
+
     var objectWithToArrayFunction = {'toArray': () => [1, 2, 3]};
     equal($($(objectWithToArrayFunction).toArray()).join(', '), '1, 2, 3', 'toArray method used if present');
-    
+
     var objectWithToArrayValue = {'toArray': 1};
     equal($($(objectWithToArrayValue).toArray()).join(', '), '1', 'toArray property ignored if not a function');
   });
@@ -302,7 +302,7 @@ CollectionTests() {
     equal($({'one': 1, 'two': 2, 'three': 3}).size(), 3, 'can compute the size of an object');
     equal($([1, 2, 3]).size(), 3, 'can compute the size of an array');
   });
-  
+
   test('collections: insert', (){
     List chars = ['b','c','d'];
     $(chars).insert(0, 'a');

@@ -1,6 +1,6 @@
-#library("UtilityTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library UtilityTests;
+import "../DUnit.dart";
+import "../Mixin.dart";
 
 UtilityTests() {
 
@@ -202,5 +202,5 @@ UtilityTests() {
 //    var templateEscaped = _.template('<%- f() %>');
 //    templateEscaped({f: function(){ ok(!(countEscaped++)); }});
 //  });
-  
+
 }

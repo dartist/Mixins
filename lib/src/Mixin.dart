@@ -1,5 +1,5 @@
-#library("Mixin");
-#import("dart:core");
+library Mixin;
+import "dart:core";
 
 $(target){
   for (Function factory in Mixin.factories) {
@@ -15,7 +15,7 @@ class Mixin {
   Mixin(this.e);
 
   static List _factories;
-  static List get factories() {
+  static List get factories {
     if (_factories == null) {
       _factories = [
         (target) => target is Mixin ? target : null,
@@ -37,7 +37,7 @@ class Mixin {
   static void registerFactory(Mixin factory(target)) => factories.insertRange(0, 1, factory);
 
   valueOf() => e;
-  int get length() => e.length;
+  int get length => e.length;
   bool isEqual(to) => e == to;
   bool isElement() => e != null && e['nodeType'] == 1;
   bool isArray() => e is List;
@@ -69,8 +69,8 @@ class Mixin {
 
   void each(f(x)) {
     if (e == null) return;
-    if (e is Collection) e.forEach(f);
-    else if (e is Map) e.forEach((k,v) => f(v));
+    if (e is Collection) { e.forEach(f);
+    } else if (e is Map) e.forEach((k,v) => f(v));
   }
   void forEach(f(x)) => each(f);
 
@@ -81,10 +81,12 @@ class Mixin {
   void collect(f(x)) => map(f);
 
   reduce(f(x,y), [memo]) {
-    if (e == null)
-      if (memo == null)
+    if (e == null) {
+      if (memo == null) {
         throw new TypeError$('Reduce of empty array with no initial value');
-      else return memo;
+      } else { return memo;
+    }
+      }
     return List$.fn(e).reduce(f,memo);
   }
   void foldl(f(x,y), [memo]) => reduce(f,memo);
@@ -206,14 +208,14 @@ class String$ extends Mixin {
           .replaceAll(new RegExp("'"), '&#x27;')
           .replaceAll(new RegExp('/'),'&#x2F;');
 
-  bool isBlank() => new RegExp(@"^\s*$").hasMatch(target);
+  bool isBlank() => new RegExp(r"^\s*$").hasMatch(target);
   String trim() => target.trim();
   String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
   String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
   List chars() => target.charCodes();
-  List lines() => target.split(new RegExp(@"\n"));
+  List lines() => target.split(new RegExp(r"\n"));
 
-  String clean() => trim().replaceAll(new RegExp(@"\s+"), ' ').trim();
+  String clean() => trim().replaceAll(new RegExp(r"\s+"), ' ').trim();
 
   String replaceAllMatches(Pattern pattern, String f(Match)) {
     StringBuffer sb = new StringBuffer();
@@ -233,8 +235,9 @@ class String$ extends Mixin {
     List to = new List();
     for (var i=0; i < arr.length; i++) {
       List word = arr[i].split('');
-      if (word.length > 0 && word[0] != null)
+      if (word.length > 0 && word[0] != null) {
         word[0] = word[0].toUpperCase();
+      }
       var val = (i+1 == arr.length)
           ? List$.fn(word).join('')
           : "${List$.fn(word).join('')} ";
@@ -244,25 +247,25 @@ class String$ extends Mixin {
   }
 
   String underscored() => $(trim())
-     .replaceAllMatches(new RegExp(@"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}_${m.group(2)}")
-     .replaceAll(new RegExp(@"\-|\s+"), '_')
+     .replaceAllMatches(new RegExp(r"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}_${m.group(2)}")
+     .replaceAll(new RegExp(r"\-|\s+"), '_')
      .replaceAll(new RegExp("-"), '_')
      .toLowerCase();
 
   String dasherize() => $($(trim())
-    .replaceAllMatches(new RegExp(@"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}-${m.group(2)}"))
+    .replaceAllMatches(new RegExp(r"([a-z\d])([A-Z]+)"), (m) => "${m.group(1)}-${m.group(2)}"))
     .replaceAllMatches(new RegExp("^([A-Z]+)"), (m) => '-${m.group(1)}')
-    .replaceAll(new RegExp(@"\_|\s+"), '-')
+    .replaceAll(new RegExp(r"\_|\s+"), '-')
     .toLowerCase();
 
-  humanize() => fn(underscored().replaceAll(new RegExp(@"_id$"),'').replaceAll("_", ' ')).capitalize();
+  humanize() => fn(underscored().replaceAll(new RegExp(r"_id$"),'').replaceAll("_", ' ')).capitalize();
 
   succ() => "${target.substring(0, target.length - 1)}${new String.fromCharCodes([target.charCodeAt(target.length - 1) + 1])}";
 
   truncate(length, [String truncateStr='...']) =>
       target.length > length ? "${target.substring(0,length)}$truncateStr" : target;
 
-  List words([Pattern delimiter=" "]) => trim().replaceAll(new RegExp(@"\s+"), " ").split(delimiter);
+  List words([Pattern delimiter=" "]) => trim().replaceAll(new RegExp(r"\s+"), " ").split(delimiter);
 
   String repeat([int times=0, String seperator='']) => _strRepeat(target, times, seperator);
 
@@ -274,8 +277,8 @@ class String$ extends Mixin {
     String padding = '', str = target;
     int padlen  = 0;
 
-    if (padStr == null) padStr = ' ';
-    else if (padStr.length > 1) padStr = padStr[0];
+    if (padStr == null) { padStr = ' ';
+    } else if (padStr.length > 1) padStr = padStr[0];
     switch(type) {
       case _PAD_LEFT:
         padlen = (length - target.length);
@@ -345,7 +348,7 @@ class List$ extends Mixin {
   }
 
   static List$ fn(list) => new List$(list);
-  List get value() => target;
+  List get value => target;
   num sum() => reduce((memo, value) => memo + value, 0);
   List clone() => _cloneList(target);
   List insert(int index, item) {
@@ -523,10 +526,11 @@ class List$ extends Mixin {
 
   List flatten([shallow=false]) {
     return reduce((List memo, value) {
-      if (value is List)
+      if (value is List) {
         memo.addAll(shallow ? value : fn(value).flatten());
-      else
+      } else {
         memo.add(value);
+      }
       return memo;
     }, []);
   }
@@ -746,8 +750,9 @@ _cloneList(List from) {
 }
 _cloneMap(Map from) {
   Map to = {};
-  for (var key in from.getKeys())
+  for (var key in from.getKeys()) {
     to[key] = from[key];
+  }
   return to;
 }
 _strRepeat(String str, int i, [String seperator='']) {

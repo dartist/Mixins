@@ -1,0 +1,7 @@
+name: dartmixins
+authors:
+ - Demis Bellot
+ - Adam Singer <financeCoding@gmail.com>
+homepage: https://github.com/mythz
+version: 0.0.1
+description: A mixin library

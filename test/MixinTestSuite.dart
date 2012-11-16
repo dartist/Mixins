@@ -1,11 +1,11 @@
-#import("../DUnit.dart");
-#import("MixinTests.dart");
-#import("ArrayTests.dart");
-#import("CollectionTests.dart");
-#import("ObjectTests.dart");
-#import("UtilityTests.dart");
-#import("StringTests.dart");
-#import("FunctionTests.dart");
+import "../DUnit.dart";
+import "MixinTests.dart";
+import "ArrayTests.dart";
+import "CollectionTests.dart";
+import "ObjectTests.dart";
+import "UtilityTests.dart";
+import "StringTests.dart";
+import "FunctionTests.dart";
 
 main(){
   MixinTests();
@@ -15,6 +15,6 @@ main(){
   UtilityTests();
   StringTests();
   FunctionTests();
-  
+
   runAllTests(hidePassedTests:true);
 }

@@ -1,6 +1,6 @@
-#library("StringTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library StringTests;
+import "../DUnit.dart";
+import "../Mixin.dart";
 
 class MyListExtensions extends List$ {
   MyListExtensions(target) : super(target);
@@ -11,10 +11,10 @@ class MyListExtensions extends List$ {
 MixinTests () {
 
   module("Mixin");
-  
+
   test('Mixin: registerFactory', (){
     Mixin.registerFactory((x) => x is List ? new MyListExtensions(x) : null);
-    
+
     equal($([1,2,3,4,5]).count((n) => n.isOdd()), 3, 'can use custom extension');
     equal($([20,30,50,100]).avg(), 50, 'can use custom extension that uses base methods');
 

@@ -1,6 +1,6 @@
-#library("FunctionTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library FunctionTests;
+import "../DUnit.dart";
+import "../Mixin.dart";
 
 FunctionTests() {
 
@@ -172,6 +172,6 @@ FunctionTests() {
     equal(testAfter(5, 5), 1, "after(N) should fire after being called N times");
     equal(testAfter(5, 4), 0, "after(N) should not fire unless called N times");
     equal(testAfter(0, 0), 1, "after(0) should fire immediately");
-  });  
+  });
 
 }
