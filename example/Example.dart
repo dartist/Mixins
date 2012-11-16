@@ -1,4 +1,4 @@
-import "package:mixin/mixin.dart";
+import "package:dartmixins/mixin.dart";
 
 void main() {
   print("Hello World");
