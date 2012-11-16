@@ -1,6 +1,6 @@
 library ObjectTests;
 import "DUnit.dart";
-import "package:mixin/mixin.dart";
+import "package:dartmixins/mixin.dart";
 
 class B { run() {}}
 class Animal extends B {}

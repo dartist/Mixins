@@ -130,20 +130,20 @@ class Mixin {
     });
   }
 
-  noSuchMethod(name, args) {
+  noSuchMethod(InvocationMirror mirror) {
     if (_mixins == null) _mixins = {}; //TODO: remove after Dart gets static lazy initialization
-    Function fn = _mixins[name];
-    if (fn == null) throw new TypeError$('Method $name not implemented');
-    var len = args.length;
+    Function fn = _mixins[mirror.memberName];
+    if (fn == null) throw new TypeError$('Method ${mirror.memberName} not implemented');
+    var len = mirror.positionalArguments.length;
     //TODO replace with generic sln when Dart gets varargs + Function call/apply ops
     //print("calling fn with $len args..");
     return len == 0
         ? fn(e)
         : len == 1
-          ? fn(e, args[0])
+          ? fn(e, mirror.positionalArguments[0])
           : len == 2
-            ? fn(e, args[0],args[1])
-            : fn(e, args[0],args[1],args[2]);
+            ? fn(e, mirror.positionalArguments[0], mirror.positionalArguments[1])
+            : fn(e, mirror.positionalArguments[0], mirror.positionalArguments[1], mirror.positionalArguments[2]);
   }
 
   static identity(x) => x;
@@ -211,7 +211,7 @@ class String$ extends Mixin {
   String trim() => target.trim();
   String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
   String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
-  List chars() => target.charCodes();
+  List chars() => target.charCodes;
   List lines() => target.split(new RegExp(r"\n"));
 
   String clean() => trim().replaceAll(new RegExp(r"\s+"), ' ').trim();
@@ -221,9 +221,9 @@ class String$ extends Mixin {
     int lastEnd = 0;
     $(pattern.allMatches(target)).forEach(
       (Match m) {
-        sb.add(target.substring(lastEnd, m.start()));
+        sb.add(target.substring(lastEnd, m.start));
         sb.add(f(m));
-        lastEnd = m.end();
+        lastEnd = m.end;
       });
     sb.add(target.substring(lastEnd));
     return sb.toString();
@@ -268,9 +268,9 @@ class String$ extends Mixin {
 
   String repeat([int times=0, String seperator='']) => _strRepeat(target, times, seperator);
 
-  static final int _PAD_LEFT = 1;
-  static final int _PAD_RIGHT = 2;
-  static final int _PAD_BOTH = 3;
+  const int _PAD_LEFT = 1;
+  const int _PAD_RIGHT = 2;
+  const int _PAD_BOTH = 3;
 
   String pad(int length, [String padStr=null, int type]) {
     String padding = '', str = target;
@@ -409,7 +409,7 @@ class List$ extends Mixin {
   bool all(_Predicate match) => every(match);
   bool some([_Predicate match]) => target.some(match != null ? match : (x) => !_isFalsy(x));
   bool any([_Predicate match]) => some(match);
-  bool isEmpty() => target.isEmpty();
+  bool isEmpty() => target.isEmpty;
   void add(item) => target.add(item);
   void addLast(item) => target.addLast(item);
   void addAll(Collection collection) => target.addAll(collection);
@@ -456,7 +456,8 @@ class List$ extends Mixin {
     List shuffled = clone();
     int index=0;
     each((value) {
-      int rand = (Math.random() * (index + 1)).floor().toInt();
+      Math.Random r = new Math.Random();
+      int rand = (r.nextDouble() * (index + 1)).floor().toInt();
       shuffled[index] = shuffled[rand];
       shuffled[rand] = value;
       index++;
@@ -513,7 +514,7 @@ class List$ extends Mixin {
   initial([int n]) => target.getRange(0, target.length - (n == null ? 1 : n));
 
   last([int n]) {
-    if (n == null) return target.last();
+    if (n == null) return target.last;
     int startAt = Math.max(target.length - n, 0);
     return target.getRange(startAt, target.length - startAt);
   }
@@ -541,7 +542,7 @@ class List$ extends Mixin {
     if (target.length < 3) isSorted = true;
     int index = 0;
     fn(init).reduce((List memo, value) {
-      bool exists = isSorted ? memo.length == 0 || memo.last() != value : memo.indexOf(value) == -1;
+      bool exists = isSorted ? memo.length == 0 || memo.last != value : memo.indexOf(value) == -1;
       if (exists) {
         memo.add(value);
         results.add(target[index]);
@@ -553,7 +554,7 @@ class List$ extends Mixin {
   }
   unique([isSorted, iterator]) => uniq(isSorted, iterator);
 
-  join([delim=',']) => reduce((memo,x) => memo.isEmpty() ? "$x" : "$memo$delim$x","");
+  join([delim=',']) => reduce((memo,x) => memo.isEmpty ? "$x" : "$memo$delim$x","");
 //  join([delim=',']) => Strings.join(target, delim);
 
   static concat(List<List> lists) {
@@ -606,12 +607,12 @@ class Map$ extends Mixin {
 
   static Map$ fn(e) => new Map$(e);
 
-  Collection keys() => target.getKeys();
-  Collection getKeys() => target.getKeys();
-  Collection values() => target.getValues();
-  Collection getValues() => target.getValues();
+  Collection keys() => target.keys;
+  Collection getKeys() => target.keys;
+  Collection values() => target.values;
+  Collection getValues() => target.values;
 
-  bool isEmpty() => target.isEmpty();
+  bool isEmpty() => target.isEmpty;
   bool containsKey() => target.containsKey(target);
   bool has() => target.containsKey(target);
   bool containsValue(item) => target.containsValue(item);
@@ -620,7 +621,7 @@ class Map$ extends Mixin {
 
   Map map(iterator(val)) {
     Map res = {};
-    for (var key in target.getKeys()){
+    for (var key in target.keys){
       res[key] = iterator(target[key]);
     }
     return res;
@@ -628,12 +629,12 @@ class Map$ extends Mixin {
 
   Map clone() => _cloneMap(target);
 
-  max([Expr expr]) => List$.fn(target.getValues()).max(expr);
-  min([Expr expr]) => List$.fn(target.getValues()).min(expr);
+  max([Expr expr]) => List$.fn(target.values).max(expr);
+  min([Expr expr]) => List$.fn(target.values).min(expr);
 
   List functions() {
     List<String> names = [];
-    for (var key in target.getKeys()) {
+    for (var key in target.keys) {
       if (target[key] is Function) names.add(key);
     }
     names.sort((String x, String y) => x.compareTo(y));
@@ -731,7 +732,7 @@ class Function$ extends Mixin {
 
 typedef IteratorFn(memo, value);
 typedef bool _Predicate(item);
-typedef Dynamic Expr(item);
+typedef dynamic Expr(item);
 
 class TypeError$ {
   String msg;
@@ -749,7 +750,7 @@ _cloneList(List from) {
 }
 _cloneMap(Map from) {
   Map to = {};
-  for (var key in from.getKeys()) {
+  for (var key in from.keys) {
     to[key] = from[key];
   }
   return to;

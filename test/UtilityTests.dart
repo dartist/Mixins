@@ -1,6 +1,6 @@
 library UtilityTests;
 import "DUnit.dart";
-import "package:mixin/mixin.dart";
+import "package:dartmixins/mixin.dart";
 
 UtilityTests() {
 

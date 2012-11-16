@@ -1,6 +1,6 @@
 library FunctionTests;
 import "DUnit.dart";
-import "package:mixin/mixin.dart";
+import "package:dartmixins/mixin.dart";
 
 FunctionTests() {
 
