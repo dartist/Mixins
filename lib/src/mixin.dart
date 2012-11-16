@@ -1,5 +1,4 @@
-library Mixin;
-import "dart:core";
+part of mixin;
 
 $(target){
   for (Function factory in Mixin.factories) {

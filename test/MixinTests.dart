@@ -1,6 +1,6 @@
 library StringTests;
-import "../DUnit.dart";
-import "../Mixin.dart";
+import "DUnit.dart";
+import "package:mixin/mixin.dart";
 
 class MyListExtensions extends List$ {
   MyListExtensions(target) : super(target);

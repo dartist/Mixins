@@ -1,4 +1,4 @@
-import "../DUnit.dart";
+import "DUnit.dart";
 import "MixinTests.dart";
 import "ArrayTests.dart";
 import "CollectionTests.dart";
