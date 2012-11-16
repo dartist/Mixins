@@ -673,7 +673,7 @@ class Map$ extends Mixin {
 class Function$ extends Mixin {
   Function target;
   Function$(target) : super(target) {
-    this.target = target == null ? {} : target;
+    this.target = target == null ? (){} : target;
   }
 
   static Function$ fn(e) => new Function$(e);
