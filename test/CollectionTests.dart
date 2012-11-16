@@ -82,7 +82,7 @@ CollectionTests() {
     var ifnull;
     try {
       $(null).reduce((x,y){});
-    } catch (final ex) {
+    } catch (ex) {
       ifnull = ex;
     }
     ok(ifnull is TypeError$, 'handles a null (without inital value) properly');
@@ -98,19 +98,19 @@ CollectionTests() {
   });
 
   test('collections: reduceRight', () {
-    var list = $(["foo", "bar", "baz"]).reduceRight((memo, str) => memo + str, '');
+    var list = $(["foo", "bar", "baz"]).reduceRight((memo, str) => '$memo$str', '');
     equal(list, 'bazbarfoo', 'can perform right folds');
 
-    list = $(["foo", "bar", "baz"]).foldr((memo, str) => memo + str, '');
+    list = $(["foo", "bar", "baz"]).foldr((memo, str) => '$memo$str', '');
     equal(list, 'bazbarfoo', 'aliased as "foldr"');
 
-    list = $(["foo", "bar", "baz"]).foldr((memo, str) => memo + str);
+    list = $(["foo", "bar", "baz"]).foldr((memo, str) => '$memo$str');
     equal(list, 'bazbarfoo', 'default initial value');
 
     var ifnull;
     try {
       $(null).reduceRight((x,y){});
-    } catch (final ex) {
+    } catch (ex) {
       ifnull = ex;
     }
     ok(ifnull is TypeError$, 'handles a null (without inital value) properly');

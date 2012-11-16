@@ -136,7 +136,7 @@ FunctionTests() {
   });
 
   test("functions: wrap", () {
-    greet(name) => "hi: " + name;
+    greet(name) => "hi: $name";
     var backwards = $(greet).wrap((func, name) => "${func(name)} ${$($(name.split('')).reverse()).join('')}" );
     equal(backwards('moe'), 'hi: moe eom', 'wrapped the saluation function');
 

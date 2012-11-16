@@ -72,7 +72,7 @@ raises(actualFn, expectedTypeFn, msg) {
   }
 }
 
-runAllTests([bool hidePassedTests=false]){
+runAllTests({bool hidePassedTests: false}){
   int totalTests = 0;
   int totalPassed = 0;
   int totalFailed = 0;

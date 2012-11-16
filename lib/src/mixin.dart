@@ -44,8 +44,8 @@ class Mixin {
   bool isFunction() => e is Function;
   bool isString() => e is String;
   bool isNumber() => e is num;
-  bool isFinite() => e is num && !e.isNaN() && !e.isInfinite();
-  bool isNaN() => e == null ? false : e.isNaN();
+  bool isFinite() => e is num && !e.isNaN && !e.isInfinite;
+  bool isNaN() => e == null ? false : e.isNaN;
   bool isBoolean() => e is bool;
   bool isDate() => e is Date;
   bool isRegExp() => e is RegExp;
@@ -63,7 +63,7 @@ class Mixin {
     e is Map ?
       (e['toArray'] is Function ?
         e['toArray']() :
-        e.getValues())
+        e.values)
     : new List.from(e);
 
   void each(f(x)) {
