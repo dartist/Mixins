@@ -1,13 +1,13 @@
-#library("ArrayTests");
-#import("dart:json");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library ArrayTests;
+import "dart:json";
+import "DUnit.dart";
+import "package:dartmixins/mixin.dart";
 
 ArrayTests() {
 
 module("Arrays");
 
-test("arrays: first", () {  
+test("arrays: first", () {
   equal($([1,2,3]).first(), 1, 'can pull out the first element of an array');
   equal($($([1,2,3]).first(0)).join(', '), "", 'can pass an index to first');
   equal($($([1,2,3]).first(2)).join(', '), '1, 2', 'can pass an index to first');
@@ -143,7 +143,7 @@ test('arrays: zip', () {
 
 test("arrays: indexOf", () {
   var numbers = [1, 2, 3];
-// Can't replace readonly fns  
+// Can't replace readonly fns
 //  numbers.indexOf = null;
 //  equal($(numbers).indexOf(2), 1, 'can compute indexOf, even without the native function');
   var result = ((args) => $(args).indexOf(2))([1, 2, 3]);
@@ -160,7 +160,7 @@ test("arrays: indexOf", () {
   index = $(numbers).indexOf(num);
   equal(index, 3, '40 is in the list');
 
-  numbers = [1, 40, 40, 40, 40, 40, 40, 40, 50, 60, 70]; 
+  numbers = [1, 40, 40, 40, 40, 40, 40, 40, 50, 60, 70];
   num = 40;
   index = $(numbers).indexOf(num);
   equal(index, 1, '40 is in the list');

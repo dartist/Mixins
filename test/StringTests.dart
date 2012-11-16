@@ -1,11 +1,11 @@
-#library("StringTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library StringTests;
+import "DUnit.dart";
+import "package:dartmixins/mixin.dart";
 
 StringTests(){
-  
+
   module("Strings");
-  
+
   test("Strings: capitalize", () {
     equal($("fabio").capitalize(), "Fabio", 'First letter is upper case');
     equal($('FOO').capitalize(), 'FOO', 'Other letters unchanged');
@@ -19,7 +19,7 @@ StringTests(){
     equal($("123").reverse(), "321", "Non string");
     equal($("123.45").reverse(), "54.321", "Non string");
   });
-  
+
   test("Strings: clean", () {
     equal($(" foo    bar   ").clean(), "foo bar", 'cleans spaced words');
     equal($("123").clean(), "123", "does not change numbers");
@@ -61,7 +61,7 @@ StringTests(){
     equal($('the dasherize string method').dasherize(), 'the-dasherize-string-method', 'can dasherize lower case words');
     equal($('the  dasherize string method  ').dasherize(), 'the-dasherize-string-method', 'can dasherize spaced words');
     equal($('téléphone').dasherize(), 'téléphone', 'can dasherize i18n words');
-    equal($(@'foo$bar').dasherize(), @'foo$bar', 'dasherize leaves special chars');
+    equal($(r'foo$bar').dasherize(), r'foo$bar', 'dasherize leaves special chars');
     equal($("123").dasherize(), '123', 'dasherize leaves numbers');
   });
 
@@ -89,14 +89,14 @@ StringTests(){
     ok(!$('a').isBlank(), 'a is not blank');
     ok(!$('0').isBlank(), 'string 0 is not blank');
   });
-  
+
   test('String: words', () {
     equal($("I love you!").words().length, 3, 'handles !');
     equal($(" I    love   you!  ").words().length, 3, 'handles spaced words');
     equal($("I_love_you!").words('_').length, 3, 'handles underscores');
     equal($("I-love-you!").words(new RegExp("-")).length, 3, 'handles RegExp');
     equal($("123").words().length, 1, 'handles numbers');
-  });  
+  });
 
   test('String: chars', () {
     equal($("Hello").chars().length, 5, 'does word');
@@ -107,7 +107,7 @@ StringTests(){
     equal($("Hello\nWorld").lines().length, 2, 'does multiple lines');
     equal($("Hello World").lines().length, 1, 'does single line');
     equal($("123").lines().length, 1, 'does number');
-  });  
+  });
 
   test('String: lpad', () {
     equal($("1").lpad(8), '       1', 'does char');
@@ -128,27 +128,27 @@ StringTests(){
     equal($("foo").lrpad(7, '0'), '00foo00', 'does word with padStr 7');
     equal($("foo").lrpad(7, '!@%dofjrofj'), '!!foo!!','does use partial padStr');
   });
-  
+
   test('Strings: stripTags', () {
     equal($('a <a href="#">link</a>').stripTags(), 'a link', 'can strip link');
-    equal($('a <a href="#">link</a><script>alert("hello world!")</scr'+'ipt>').stripTags(), 'a linkalert("hello world!")', 'can strip link with js');
+    equal($('a <a href="#">link</a><script>alert("hello world!")</script>').stripTags(), 'a linkalert("hello world!")', 'can strip link with js');
     equal($('<html><body>hello world</body></html>').stripTags(), 'hello world', 'can strip html');
     equal($('123').stripTags(), '123', 'leaves number');
   });
-  
+
   test('Strings: repeat', () {
     equal($('foo').repeat(), '', 'does not repeat without times');
     equal($('foo').repeat(3), 'foofoofoo', 'does 3 times');
     equal($('123').repeat(2), '123123', 'does number');
     equal($('1234').repeat(2, '*'), '1234*1234', 'does with seperator');
   });
-  
+
   test('Strings: splitOnFirst', (){
     deepEqual($("/a/test/path").splitOnFirst("/"), ["","a/test/path"], "can split on first char");
     deepEqual($("a/test/path").splitOnFirst("/"), ["a","test/path"], "can split on string with multiple matches");
     deepEqual($("a/test/path").splitOnFirst("_"), ["a/test/path"], "unmatched leaves string in-tact");
   });
-  
+
   test('Strings: splitOnLast', (){
     deepEqual($("a/test/path/").splitOnLast("/"), ["a/test/path",""], "can split on last char");
     deepEqual($("a/test/path").splitOnLast("/"), ["a/test","path"], "can split on string with multiple matches");

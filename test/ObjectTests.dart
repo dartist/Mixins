@@ -1,6 +1,6 @@
-#library("ObjectTests");
-#import("../DUnit.dart");
-#import("../Mixin.dart");
+library ObjectTests;
+import "DUnit.dart";
+import "package:dartmixins/mixin.dart";
 
 class B { run() {}}
 class Animal extends B {}
@@ -564,5 +564,5 @@ ObjectTests() {
       valueOf();
     ok(returned == 6 && intercepted == 6, 'can use tapped objects in a chain');
   });
-  
+
 }
