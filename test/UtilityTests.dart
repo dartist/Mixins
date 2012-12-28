@@ -151,7 +151,7 @@ UtilityTests() {
 //    strictEqual(tmpl(), '<p>\u2028\u2028\u2029\u2029</p>');
 //  });
 //
-  test('result calls functions and returns primitives', function() {
+  test('result calls functions and returns primitives', () {
     var x = 'x';
     var obj = {'w': '', 'x': x, 'y': (_) => x };
     strictEqual($(obj).result('w'), '', 'returns empty string');

@@ -9,7 +9,7 @@ ObjectTests() {
 
   module("Objects");
 
-  test("objects: keys", function() {
+  test("objects: keys", () {
     equal($($({'one': 1, 'two': 2}).keys()).join(', '), 'one, two', 'can extract the keys from an object');
     // the test above is not safe because it relies on for-in enumeration order
 //    var a = []; a[1] = 0;
@@ -74,7 +74,7 @@ ObjectTests() {
     equal(options['word'], "word", 'new value is added, first one wins');
   });
 
-  test("objects: clone", function() {
+  test("objects: clone", () {
     var moe = {'name': 'moe', 'lucky': [13, 27, 34]};
     var clone = $(moe).clone();
     equal(clone['name'], 'moe', 'the clone as the attributes of the original');

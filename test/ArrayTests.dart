@@ -65,7 +65,7 @@ test("arrays: flatten", () {
   equal(JSON.stringify(result), '[1,2,3,4]', 'works on an arguments object');
 });
 
-test("arrays: without", function() {
+test("arrays: without", () {
   List list = [1, 2, 1, 0, 3, 1, 4];
   equal($($(list).without([0, 1])).join(', '), '2, 3, 4', 'can remove all instances of an object');
   var result = ((args) => $(args).without([0, 1]))([1, 2, 1, 0, 3, 1, 4]);
@@ -119,7 +119,7 @@ test("arrays: intersection", () {
   equal($(result).join(''), 'moe', 'works on an arguments object');
 });
 
-test("arrays: union", function() {
+test("arrays: union", () {
   var result = $([1, 2, 3]).union([[2, 30, 1], [1, 40]]);
   equal($(result).join(' '), '1 2 3 30 40', 'takes the union of a list of arrays');
 

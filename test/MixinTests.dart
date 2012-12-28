@@ -1,4 +1,4 @@
-library StringTests;
+library MixinTests;
 import "DUnit.dart";
 import "package:dartmixins/mixin.dart";
 
