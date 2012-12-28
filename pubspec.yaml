@@ -3,5 +3,5 @@ description: A mixin library that provides support for the usual functional susp
 authors:
  - Demis Bellot
  - Adam Singer <financeCoding@gmail.com>
-homepage: https://github.com/mythz
+homepage: https://github.com/Dartist/Mixins
 version: 0.0.1
