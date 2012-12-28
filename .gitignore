@@ -3,4 +3,5 @@ bin
 obj
 
 # mstest test results
-TestResults
+TestResults.children
+.project

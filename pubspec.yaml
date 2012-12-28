@@ -1,7 +1,7 @@
 name: dartmixins
+description: A mixin library that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core Dart objects with a jQuery-like interface.
 authors:
  - Demis Bellot
  - Adam Singer <financeCoding@gmail.com>
 homepage: https://github.com/mythz
 version: 0.0.1
-description: A mixin library

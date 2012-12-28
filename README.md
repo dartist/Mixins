@@ -12,20 +12,11 @@ This [Dart](http://www.dartlang.org) project includes most utils from the popula
 
 Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 
-## Download 
+## Adding Dependencies with Pubspec
+    dependencies:
+      dartredisclient: any 
 
-This will be made available on the Dart Package Manager when its ready, until then you can easily make use of this library by adding it as a submodule at your projects root:
-
-    git submodule add git@github.com:mythz/DartMixins.git vendor/Mixins
-    cd vendor/Mixins
-    git submodule init
-    git submodule update    
-
-Then you can pull future project updates with a git pull in the submodule directory, e.g:
-
-    git pull origin master    
-
-If you prefer not to add a submodule you can just copy the single, stand-alone [Mixin.dart](https://github.com/mythz/DartMixins/blob/master/Mixin.dart) file. 
+## Documentation
 
 Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight, text-based [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) test runner used is also available to download separately.
 
@@ -335,6 +326,7 @@ Contributions to this project in code, tests, issues, wikis, etc are welcome.
 ### Contributors
 
   - [mythz](https://github.com/mythz) (Demis Bellot)
+  - [financeCoding](https://github.com/financeCoding) (Adam Singer)
 
 ### Future
 
