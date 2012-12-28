@@ -40,8 +40,8 @@ CollectionTests() {
     var doubled = $([1, 2, 3]).map((num) => num * 2);
     equal($(doubled).join(', '), '2, 4, 6', 'doubled numbers');
 
-    doubled = $([1, 2, 3]).collect((num) => num * 2);
-    equal($(doubled).join(', '), '2, 4, 6', 'aliased as "collect"');
+//    doubled = $([1, 2, 3]).collect((num) => num * 2);
+//    equal($(doubled).join(', '), '2, 4, 6', 'aliased as "collect"');
 
 //    var tripled = _.map([1, 2, 3], function(num){ return num * this.multiplier; }, {multiplier : 3});
 //    equal(tripled.join(', '), '3, 6, 9', 'tripled numbers with context');
@@ -63,7 +63,7 @@ CollectionTests() {
   });
 
   test('collections: reduce', () {
-    var sum = $([1, 2, 3]).reduce((sum, num) => sum + num, 0);
+    var sum = $([1, 2, 3]).reduce((rsum, num) => rsum + num, 0);
     equal(sum, 6, 'can sum up an array');
 
 //    var context = {multiplier : 3};
@@ -173,7 +173,7 @@ CollectionTests() {
 //    Array.prototype.some = nativeSome;
   });
 
-  test('collections: include', function() {
+  test('collections: include', () {
     ok($([1,2,3]).include(2), 'two is in the array');
     ok(!$([1,3,9]).include(2), 'two is not in the array');
     ok($({'moe':1, 'larry':3, 'curly':9}).contains(3) == true, '_.include on objects checks their values');
@@ -225,7 +225,7 @@ CollectionTests() {
     equal(double.NEGATIVE_INFINITY, $([]).max(), 'Maximum value of an empty array');
   });
 
-  test('collections: min', function() {
+  test('collections: min', () {
     equal($([1, 2, 3]).min(), 1, 'can perform a regular Math.min');
 
     var neg = $([1, 2, 3]).min((num) => -num);
@@ -239,7 +239,7 @@ CollectionTests() {
     equal($([now, then]).min(), then, 'can perform min on date');
   });
 
-  test('collections: sortBy', function() {
+  test('collections: sortBy', () {
     List people = [{'name': 'curly', 'age': 50}, {'name': 'moe', 'age': 30}];
     people = $(people).sortBy((person) => person['age']);
     equal($($(people).pluck('name')).join(', '), 'moe, curly', 'stooges sorted by age');
@@ -264,7 +264,7 @@ CollectionTests() {
     equal($(grouped['5']).join(' '), 'three seven eight', '3rd group grouped by length');
   });
 
-  test('collections: sortedIndex', function() {
+  test('collections: sortedIndex', () {
     List numbers = [10, 20, 30, 40, 50];
     int num = 35;
     var indexForNum = $(numbers).sortedIndex(num);
@@ -281,7 +281,7 @@ CollectionTests() {
     equal($(shuffled).join(','), $(numbers).join(','), 'contains the same members before and after shuffle');
   });
 
-  test('collections: toArray', function() {
+  test('collections: toArray', () {
 //    ok(!_.isArray(arguments), 'arguments object is not an array');
 //    ok(_.isArray(_.toArray(arguments)), 'arguments object converted into array');
     var a = [1,2,3];
