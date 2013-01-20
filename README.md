@@ -14,7 +14,7 @@ Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 
 ## Adding Dependencies with Pubspec
     dependencies:
-      dartredisclient: any 
+      dartmixins: any 
 
 ## Documentation
 
