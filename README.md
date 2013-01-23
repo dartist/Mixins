@@ -18,7 +18,7 @@ Follow [@demisbellot](http://twitter.com/demisbellot) for updates.
 
 ## Documentation
 
-Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/mythz/DartMixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight, text-based [DUnit.dart](https://github.com/mythz/DartMixins/blob/master/DUnit.dart) test runner used is also available to download separately.
+Refer to the [underscorejs.org](http://underscorejs.org/) website for documentation or the included [test suite](https://github.com/Dartist/Mixins/tree/master/tests) and its [output](https://gist.github.com/2523357). The light-weight, text-based [DUnit.dart](https://github.com/Dartist/Mixins/blob/master/DUnit.dart) test runner used is also available to download separately.
 
 ## Usage
 
