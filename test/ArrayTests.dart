@@ -1,5 +1,5 @@
 library ArrayTests;
-import "dart:json";
+import "dart:json" as JSON;
 import "DUnit.dart";
 import "package:dartmixins/mixin.dart";
 
@@ -14,7 +14,7 @@ test("arrays: first", () {
   equal($($([1,2,3]).first(5)).join(', '), '1, 2, 3', 'can pass an index to first');
   var result = ((args) => $(args).first())([4, 3, 2, 1]);
   equal(result, 4, 'works on an arguments object.');
-  result = $([[1,2,3],[1,2,3]]).map((x) => $(x).first());
+  result = $([[1,2,3],[1,2,3]]).mappedBy((x) => $(x).first());
   equal($(result).join(','), '1,1', 'works well with _.map');
   result = (() => $([1,2,3]).take(2))();
   equal($(result).join(','), '1,2', 'aliased as take');
@@ -27,7 +27,7 @@ test("arrays: rest", () {
   equal($($(numbers).rest(2)).join(', '), '3, 4', 'rest can take an index');
   var result = ((args) => $(args).tail())([1, 2, 3, 4]);
   equal($(result).join(', '), '2, 3, 4', 'aliased as tail and works on arguments object');
-  result = $([[1,2,3],[1,2,3]]).map((x) => $(x).rest());
+  result = $([[1,2,3],[1,2,3]]).mappedBy((x) => $(x).rest());
   equal($($(result).flatten()).join(','), '2,3,2,3', 'works well with _.map');
 });
 
@@ -36,7 +36,7 @@ test("arrays: initial", () {
   equal($($([1,2,3,4]).initial(2)).join(", "), "1, 2", 'initial can take an index');
   var result = ((args) => $(args).initial())([1, 2, 3, 4]);
   equal($(result).join(", "), "1, 2, 3", 'initial works on arguments object');
-  result = $([[1,2,3],[1,2,3]]).map((x) => $(x).initial());
+  result = $([[1,2,3],[1,2,3]]).mappedBy((x) => $(x).initial());
   equal($($(result).flatten()).join(','), '1,2,1,2', 'initial works with _.map');
 });
 
@@ -47,7 +47,7 @@ test("arrays: last", () {
   equal($($([1,2,3]).last(5)).join(', '), '1, 2, 3', 'can pass an index to last');
   var result = ((args) => $(args).last())([1, 2, 3, 4]);
   equal(result, 4, 'works on an arguments object');
-  result = $([[1,2,3],[1,2,3]]).map((x) => $(x).last());
+  result = $([[1,2,3],[1,2,3]]).mappedBy((x) => $(x).last());
   equal($(result).join(','), '3,3', 'works well with _.map');
 });
 
@@ -85,7 +85,7 @@ test("arrays: uniq", () {
 
   list = [{'name':'moe'}, {'name':'curly'}, {'name':'larry'}, {'name':'curly'}];
   var iterator = (value) => value['name'];
-  equal($($($(list).uniq(false, iterator)).map(iterator)).join(', '), 'moe, curly, larry', 'can find the unique values of an array using a custom iterator');
+  equal($($($(list).uniq(false, iterator)).mappedBy(iterator)).join(', '), 'moe, curly, larry', 'can find the unique values of an array using a custom iterator');
 
   iterator = (value) => value +1;
   list = [1, 2, 2, 3, 4, 4];

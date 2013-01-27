@@ -37,7 +37,7 @@ CollectionTests() {
   });
 
   test('collections: map', () {
-    var doubled = $([1, 2, 3]).map((num) => num * 2);
+    var doubled = $([1, 2, 3]).mappedBy((num) => num * 2);
     equal($(doubled).join(', '), '2, 4, 6', 'doubled numbers');
 
 //    doubled = $([1, 2, 3]).collect((num) => num * 2);
@@ -46,7 +46,7 @@ CollectionTests() {
 //    var tripled = _.map([1, 2, 3], function(num){ return num * this.multiplier; }, {multiplier : 3});
 //    equal(tripled.join(', '), '3, 6, 9', 'tripled numbers with context');
 
-    doubled = $([1, 2, 3]).map((num) => num * 2);
+    doubled = $([1, 2, 3]).mappedBy((num) => num * 2);
     equal($(doubled).join(', '), '2, 4, 6', 'OO-style doubled numbers');
 
 //    var ids = _.map($('div.underscore-test').children(), function(n){ return n.id; });
@@ -55,10 +55,10 @@ CollectionTests() {
 //    var ids = _.map(document.images, function(n){ return n.id; });
 //    ok(ids[0] == 'chart_image', 'can use collection methods on HTMLCollections');
 
-    var ifnull = $(null).map((_){});
+    var ifnull = $(null).mappedBy((_){});
     ok($(ifnull).isArray() && ifnull.length == 0, 'handles a null properly');
 
-    var length = $(new List(2)).map((v) => v).length;
+    var length = $(new List.fixedLength(2)).mappedBy((v) => v).length;
     equal(length, 2, "can preserve a sparse array's length");
   });
 
@@ -135,7 +135,7 @@ CollectionTests() {
     var evens = $([1, 2, 3, 4, 5, 6]).select((num) => num % 2 == 0);
     equal($(evens).join(', '), '2, 4, 6', 'selected each even number');
 
-    evens = $([1, 2, 3, 4, 5, 6]).filter((num) => num % 2 == 0);
+    evens = $([1, 2, 3, 4, 5, 6]).where((num) => num % 2 == 0);
     equal($(evens).join(', '), '2, 4, 6', 'aliased as "filter"');
   });
 

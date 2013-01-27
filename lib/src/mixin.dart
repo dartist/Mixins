@@ -75,7 +75,7 @@ class Mixin {
 
   map(f(x)) {
     if (e == null) return [];
-    return e.map(f);
+    return e.mappedBy(f);
   }
   void collect(f(x)) => map(f);
 
@@ -97,7 +97,7 @@ class Mixin {
   void foldr(f(x,y), [memo]) => reduceRight(f,memo);
 
   static int _idCounter = 0;
-  static uniqueId ([prefix]) {
+  static uniqueId ({prefix}) {
     int id = _idCounter++;
     return prefix == null ? "$prefix$id" : id;
   }
@@ -156,7 +156,7 @@ class Mixin {
 
     int len = Math.max(((stop - start) / step).ceil(), 0).toInt();
     int idx = 0;
-    List res = new List(len);
+    List res = new List.fixedLength(len);
 
     while(idx < len) {
       res[idx++] = start;
@@ -400,14 +400,14 @@ class List$ extends Mixin {
   find(_Predicate match)   => single(match);
   detect(_Predicate match) => single(match);
 
-  List filter(_Predicate match) => target.filter(match);
-  List select(_Predicate match) => target.filter(match);
-  List map(Function convert) => target.map(convert);
+  List filter(_Predicate match) => target.where(match).toList();
+  List select(_Predicate match) => target.where(match).toList();
+  List map(Function convert) => target.mappedBy(convert).toList();
   void forEach(Function f) => target.forEach(f);
   void each(Function f) => target.forEach(f);
   bool every(_Predicate match) => target.every(match);
   bool all(_Predicate match) => every(match);
-  bool some([_Predicate match]) => target.some(match != null ? match : (x) => !_isFalsy(x));
+  bool some([_Predicate match]) => target.any(match != null ? match : (x) => !_isFalsy(x));
   bool any([_Predicate match]) => some(match);
   bool isEmpty() => target.isEmpty;
   void add(item) => target.add(item);
@@ -418,7 +418,7 @@ class List$ extends Mixin {
   List getRange(int start, int length) => target.getRange(start, length);
   void setRange(int start, int length, List from, [int startFrom]) => target.setRange(start, length, from, startFrom);
 
-  reject(_Predicate match) => target.filter((x) => !match(x));
+  reject(_Predicate match) => target.where((x) => !match(x)).toList();
 
   List pluck(String key) => map((value) => value[key]);
 
@@ -564,24 +564,24 @@ class List$ extends Mixin {
   }
 
   //TODO: replace with varargs
-  intersection(List<List> with) =>
-    uniq().filter((item) =>
-      with.every( (other) => other.indexOf(item) >= 0 )
+  intersection(List<List> _with) =>
+    uniq().where((item) =>
+        _with.every( (other) => other.indexOf(item) >= 0 )
     );
-  intersect(List<List> with) => intersection(with);
+  intersect(List<List> _with) => intersection(_with);
 
-  difference(List<List> with) {
-    List _rest = fn(with).flatten(true);
+  difference(List<List> _with) {
+    List _rest = fn(_with).flatten(true);
     return filter((value) => !fn(_rest).include(value) );
   }
-  without(List<List> with) => difference(with);
-  union(List<List> with) => fn(fn(concat([target,with])).flatten(true)).uniq();
+  without(List<List> _with) => difference(_with);
+  union(List<List> _with) => fn(fn(concat([target,_with])).flatten(true)).uniq();
 
   static zip(List args) {
-    int length = fn(args.map((x) => x.length)).max();
-    List results = new List(length);
+    int length = fn(args.mappedBy((x) => x.length).toList()).max();
+    List results = new List.fixedLength(length);
     var $args = $(args);
-    for (int i = 0; i < length; i++) results[i] = $args.map((x) => i < x.length ? x[i] : null);
+    for (int i = 0; i < length; i++) results[i] = $args.mappedBy((x) => i < x.length ? x[i] : null);
     return results;
   }
 
@@ -756,7 +756,7 @@ _cloneMap(Map from) {
   return to;
 }
 _strRepeat(String str, int i, [String seperator='']) {
-  List to = new List(i);
+  List to = new List.fixedLength(i);
   for (; i > 0; to[--i] = i == 1 ? str : "$str$seperator") {}
   return List$.fn(to).join('');
 }

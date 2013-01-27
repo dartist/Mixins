@@ -558,7 +558,7 @@ ObjectTests() {
     equal(returned, 1, "returns tapped object");
 
     returned = $($($($([1,2,3]).
-      map((n) => n * 2)).
+      mappedBy((n) => n * 2)).
       max()).
       tap(interceptor)).
       valueOf();
