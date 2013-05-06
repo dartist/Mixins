@@ -86,7 +86,7 @@ class Mixin {
       } else { return memo;
     }
       }
-    return List$.fn(e).reduce(f,memo);
+    return List$.fn(e).fold(memo, f);
   }
   void foldl(f(x,y), [memo]) => reduce(f,memo);
   void inject(f(x,y), [memo]) => reduce(f,memo);
@@ -324,13 +324,14 @@ class String$ extends Mixin {
         [target.substring(0, pos), target.substring(pos + 1)];
   }
 
-  static String debugString(str) =>
-    "$str".replaceAll("[", "")
+  static String debugString(str) {
+    return "$str".replaceAll("[", "")
           .replaceAll("]", "")
           .replaceAll("{", "")
           .replaceAll("}", "")
           .replaceAll("null", "")
           .replaceAll(" ", "");
+  }
 }
 
 class List$ extends Mixin {
@@ -527,14 +528,15 @@ class List$ extends Mixin {
   compact() => filter((value) => _isFalsy(value));
 
   List flatten([shallow=false]) {
-    return reduce((List memo, value) {
-      if (value is List) {
+    var red = reduce((List memo, value) {
+      if (value is Iterable) {
         memo.addAll(shallow ? value : fn(value).flatten());
       } else {
         memo.add(value);
       }
       return memo;
     }, []);
+    return red;
   }
 
   uniq([isSorted=false, iterator]) {
