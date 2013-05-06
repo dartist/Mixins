@@ -327,6 +327,7 @@ Contributions to this project in code, tests, issues, wikis, etc are welcome.
 
   - [mythz](https://github.com/mythz) (Demis Bellot)
   - [financeCoding](https://github.com/financeCoding) (Adam Singer)
+  - [enyo](https://github.com/enyo) (Matias Meno)
 
 ### Future
 
