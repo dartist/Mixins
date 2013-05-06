@@ -59,10 +59,10 @@ test("arrays: compact", () {
 
 test("arrays: flatten", () {
   var list = [1, [2], [3, [[[4]]]]];
-  equal(JSON.stringify($(list).flatten()), '[1,2,3,4]', 'can flatten nested arrays');
-  equal(JSON.stringify($(list).flatten(true)), '[1,2,3,[[[4]]]]', 'can shallowly flatten nested arrays');
+  equal(stringify($(list).flatten()), '[1,2,3,4]', 'can flatten nested arrays');
+  equal(stringify($(list).flatten(true)), '[1,2,3,[[[4]]]]', 'can shallowly flatten nested arrays');
   var result = ((args) => $(args).flatten())([1, [2], [3, [[[4]]]]]);
-  equal(JSON.stringify(result), '[1,2,3,4]', 'works on an arguments object');
+  equal(stringify(result), '[1,2,3,4]', 'works on an arguments object');
 });
 
 test("arrays: without", () {
