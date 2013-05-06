@@ -211,7 +211,7 @@ class String$ extends Mixin {
   String trim() => target.trim();
   String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
   String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
-  List chars() => target.codeUnits;
+  List chars() => target.runes;
   List lines() => target.split(new RegExp(r"\n"));
 
   String clean() => trim().replaceAll(new RegExp(r"\s+"), ' ').trim();
