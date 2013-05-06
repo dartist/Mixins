@@ -327,6 +327,8 @@ class String$ extends Mixin {
   static String debugString(str) =>
     "$str".replaceAll("[", "")
           .replaceAll("]", "")
+          .replaceAll("{", "")
+          .replaceAll("}", "")
           .replaceAll("null", "")
           .replaceAll(" ", "");
 }
