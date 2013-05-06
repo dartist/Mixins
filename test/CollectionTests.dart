@@ -234,8 +234,8 @@ CollectionTests() {
     equal(double.INFINITY, $({}).min(), 'Minimum value of an empty object');
     equal(double.INFINITY, $([]).min(), 'Minimum value of an empty array');
 
-    Date now = new Date.fromMillisecondsSinceEpoch(9999999999, isUtc: true);
-    Date then = new Date.fromMillisecondsSinceEpoch(0, isUtc: true);
+    DateTime now = new DateTime.fromMillisecondsSinceEpoch(9999999999, isUtc: true);
+    DateTime then = new DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
     equal($([now, then]).min(), then, 'can perform min on date');
   });
 

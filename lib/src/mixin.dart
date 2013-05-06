@@ -18,7 +18,7 @@ class Mixin {
     if (_factories == null) {
       _factories = [
         (target) => target is Mixin ? target : null,
-        (target) => target is Collection ? new List$(target) : null,
+        (target) => target is Iterable ? new List$(target) : null,
         (target) => target is Map ? new Map$(target) : null,
         (target) => target is String ? new String$(target) : null,
         (target) => target is num ? new Num$(target) : null,
@@ -33,7 +33,7 @@ class Mixin {
    * New factory is given the first opportunity to handle new invocations of $().
    * Return a wrapped Mixin if target is a match; otherwise null to let other factories handle object.
    */
-  static void registerFactory(Mixin factory(target)) => factories.insertRange(0, 1, factory);
+  static void registerFactory(Mixin factory(target)) => factories.insert(0, factory);
 
   valueOf() => e;
   int get length => e.length;
@@ -47,7 +47,7 @@ class Mixin {
   bool isFinite() => e is num && !e.isNaN && !e.isInfinite;
   bool isNaN() => e == null ? false : e.isNaN;
   bool isBoolean() => e is bool;
-  bool isDate() => e is Date;
+  bool isDate() => e is DateTime;
   bool isRegExp() => e is RegExp;
   bool isNull() => e == null;
   bool isUndefined() => isNull();
@@ -68,7 +68,7 @@ class Mixin {
 
   void each(f(x)) {
     if (e == null) return;
-    if (e is Collection) { e.forEach(f);
+    if (e is Iterable) { e.forEach(f);
     } else if (e is Map) e.forEach((k,v) => f(v));
   }
   void forEach(f(x)) => each(f);
@@ -130,9 +130,9 @@ class Mixin {
     });
   }
 
-  noSuchMethod(InvocationMirror mirror) {
+  noSuchMethod(Invocation mirror) {
     if (_mixins == null) _mixins = {}; //TODO: remove after Dart gets static lazy initialization
-    Function fn = _mixins[mirror.memberName];
+    Function fn = _mixins[MirrorSystem.getName(mirror.memberName)];
     if (fn == null) throw new TypeError$('Method ${mirror.memberName} not implemented');
     var len = mirror.positionalArguments.length;
     //TODO replace with generic sln when Dart gets varargs + Function call/apply ops
@@ -211,7 +211,7 @@ class String$ extends Mixin {
   String trim() => target.trim();
   String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
   String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
-  List chars() => target.charCodes;
+  List chars() => target.codeUnits;
   List lines() => target.split(new RegExp(r"\n"));
 
   String clean() => trim().replaceAll(new RegExp(r"\s+"), ' ').trim();
@@ -221,11 +221,11 @@ class String$ extends Mixin {
     int lastEnd = 0;
     $(pattern.allMatches(target)).forEach(
       (Match m) {
-        sb.add(target.substring(lastEnd, m.start));
-        sb.add(f(m));
+        sb.write(target.substring(lastEnd, m.start));
+        sb.write(f(m));
         lastEnd = m.end;
       });
-    sb.add(target.substring(lastEnd));
+    sb.write(target.substring(lastEnd));
     return sb.toString();
   }
 
@@ -351,7 +351,7 @@ class List$ extends Mixin {
   num sum() => reduce((memo, value) => memo + value, 0);
   List clone() => _cloneList(target);
   List insert(int index, item) {
-    target.insertRange(index, 1, item);
+    target.insert(index, item);
     return target;
   }
 
@@ -400,25 +400,25 @@ class List$ extends Mixin {
   find(_Predicate match)   => single(match);
   detect(_Predicate match) => single(match);
 
-  List filter(_Predicate match) => target.filter(match);
-  List select(_Predicate match) => target.filter(match);
+  List filter(_Predicate match) => target.where(match);
+  List select(_Predicate match) => target.where(match);
   List map(Function convert) => target.map(convert);
   void forEach(Function f) => target.forEach(f);
   void each(Function f) => target.forEach(f);
   bool every(_Predicate match) => target.every(match);
   bool all(_Predicate match) => every(match);
-  bool some([_Predicate match]) => target.some(match != null ? match : (x) => !_isFalsy(x));
+  bool some([_Predicate match]) => target.any(match != null ? match : (x) => !_isFalsy(x));
   bool any([_Predicate match]) => some(match);
   bool isEmpty() => target.isEmpty;
   void add(item) => target.add(item);
   void addLast(item) => target.addLast(item);
-  void addAll(Collection collection) => target.addAll(collection);
+  void addAll(Iterable collection) => target.addAll(collection);
   void clear() => target.clear();
   removeLast() => target.removeLast();
   List getRange(int start, int length) => target.getRange(start, length);
   void setRange(int start, int length, List from, [int startFrom]) => target.setRange(start, length, from, startFrom);
 
-  reject(_Predicate match) => target.filter((x) => !match(x));
+  reject(_Predicate match) => target.where((x) => !match(x));
 
   List pluck(String key) => map((value) => value[key]);
 
@@ -426,12 +426,12 @@ class List$ extends Mixin {
   contains(item) => include(item);
 
   static final int MaxInt = 2^32-1;
-  Date MinDate; //TODO: use lazy static initialization when available
+  DateTime MinDate; //TODO: use lazy static initialization when available
   max([Expr expr]) {
-    if (MinDate == null) MinDate = new Date.fromMillisecondsSinceEpoch(0, isUtc: true);
+    if (MinDate == null) MinDate = new DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
     if (isEmpty()) return double.NEGATIVE_INFINITY;
     var firstArg = target[0];
-    var res = {'computed': firstArg is Date ? MinDate : double.NEGATIVE_INFINITY};
+    var res = {'computed': firstArg is DateTime ? MinDate : double.NEGATIVE_INFINITY};
     each((value) {
       var computed = expr != null ? expr(value) : value;
       computed.compareTo(res['computed']) >= 0 && (res = {'value': value, 'computed': computed}) != null;
@@ -439,12 +439,12 @@ class List$ extends Mixin {
     return res['value'];
   }
 
-  Date MaxDate; //TODO: use lazy static initialization when available
+  DateTime MaxDate; //TODO: use lazy static initialization when available
   min([Expr expr]) {
     if (isEmpty()) return double.INFINITY;
-    if (MaxDate == null) MaxDate = new Date.fromMillisecondsSinceEpoch(MaxInt, isUtc: true);
+    if (MaxDate == null) MaxDate = new DateTime.fromMillisecondsSinceEpoch(MaxInt, isUtc: true);
     var firstArg = target[0];
-    var res = {'computed': firstArg is Date ? MaxDate : double.INFINITY};
+    var res = {'computed': firstArg is DateTime ? MaxDate : double.INFINITY};
     each((value) {
       var computed = expr != null ? expr(value) : value;
       computed.compareTo(res['computed']) < 0 && (res = {'value': value, 'computed': computed}) != null;
@@ -564,18 +564,18 @@ class List$ extends Mixin {
   }
 
   //TODO: replace with varargs
-  intersection(List<List> with) =>
+  intersection(List<List> withVar) =>
     uniq().filter((item) =>
-      with.every( (other) => other.indexOf(item) >= 0 )
+      withVar.every( (other) => other.indexOf(item) >= 0 )
     );
-  intersect(List<List> with) => intersection(with);
+  intersect(List<List> withVar) => intersection(withVar);
 
-  difference(List<List> with) {
-    List _rest = fn(with).flatten(true);
+  difference(List<List> withVar) {
+    List _rest = fn(withVar).flatten(true);
     return filter((value) => !fn(_rest).include(value) );
   }
-  without(List<List> with) => difference(with);
-  union(List<List> with) => fn(fn(concat([target,with])).flatten(true)).uniq();
+  without(List<List> withVar) => difference(withVar);
+  union(List<List> withVar) => fn(fn(concat([target,withVar])).flatten(true)).uniq();
 
   static zip(List args) {
     int length = fn(args.map((x) => x.length)).max();
@@ -607,10 +607,10 @@ class Map$ extends Mixin {
 
   static Map$ fn(e) => new Map$(e);
 
-  Collection keys() => target.keys;
-  Collection getKeys() => target.keys;
-  Collection values() => target.values;
-  Collection getValues() => target.values;
+  Iterable keys() => target.keys;
+  Iterable getKeys() => target.keys;
+  Iterable values() => target.values;
+  Iterable getValues() => target.values;
 
   bool isEmpty() => target.isEmpty;
   bool containsKey() => target.containsKey(target);

@@ -22,7 +22,7 @@ MixinTests () {
 
   test("Mixin: mixin", () {
     Mixin.mixin({
-      'myReverse': (string) => $($(string.splitChars()).reverse()).join('')
+      'myReverse': (string) => $($(string.split("")).reverse()).join('')
     });
     equal($('panacea').myReverse(), 'aecanap', 'mixed in a function to _');
 //    equal($('test').myReverse(), 'tset', 'mixed in a function to _');

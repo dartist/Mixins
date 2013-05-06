@@ -1,5 +1,7 @@
 library DUnit;
 
+import "dart:collection";
+
 /*
  * A minimal port of the QUnit subset that Underscore.js uses.
  */
@@ -111,7 +113,7 @@ runAllTests({bool hidePassedTests: false}){
       String error = null;
 
       int total = _testAssertions.length;
-      int failed = _testAssertions.filter((x) => !x.success()).length;
+      int failed = _testAssertions.where((x) => !x.success()).length;
       int success = total - failed;
 
       totalTests  += total;
