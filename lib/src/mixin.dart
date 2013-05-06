@@ -516,10 +516,10 @@ class List$ extends Mixin {
   last([int n]) {
     if (n == null) return target.last;
     int startAt = Math.max(target.length - n, 0);
-    return target.getRange(startAt, target.length - startAt);
+    return target.getRange(startAt, target.length);
   }
 
-  rest([int n]) => target.getRange(n == null ? 1 : n, target.length - (n == null ? 1 : n));
+  rest([int n]) => target.getRange(n == null ? 1 : n, target.length);
   tail([int n]) => rest(n);
 
   compact() => filter((value) => _isFalsy(value));
@@ -565,7 +565,7 @@ class List$ extends Mixin {
 
   //TODO: replace with varargs
   intersection(List<List> withVar) =>
-    uniq().filter((item) =>
+    uniq().where((item) =>
       withVar.every( (other) => other.indexOf(item) >= 0 )
     );
   intersect(List<List> withVar) => intersection(withVar);
