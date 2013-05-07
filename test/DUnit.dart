@@ -1,6 +1,7 @@
 library DUnit;
 
 import "dart:collection";
+import 'dart:io' as io;
 
 /*
  * A minimal port of the QUnit subset that Underscore.js uses.
@@ -90,6 +91,12 @@ runAllTests({bool hidePassedTests: false}){
   _end(){
     print("\nTests completed in ${sw.elapsedMilliseconds}ms");
     print("$totalTests tests of $totalPassed passed, $totalFailed failed.");
+
+    if (totalFailed > 0) {
+      io.exit(-1);
+    } else {
+      io.exit(0);
+    }
   }
 
   _next = (){
