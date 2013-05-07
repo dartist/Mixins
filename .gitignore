@@ -5,3 +5,4 @@ obj
 # mstest test results
 TestResults.children
 .project
+packages
