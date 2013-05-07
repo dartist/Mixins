@@ -5,3 +5,7 @@ authors:
  - Adam Singer <financeCoding@gmail.com>
 homepage: https://github.com/Dartist/Mixins
 version: 0.0.2
+environment:
+  sdk: '>=0.5.3'
+dev_dependencies:
+  hop: '>=0.22.1+1'

@@ -1,6 +1,9 @@
 Dart Mixins
 ===========
 
+[![Build Status](https://drone.io/github.com/Dartist/Mixins/status.png)](https://drone.io/github.com/Dartist/Mixins/latest)
+
+
 ## Update - 17 Aug 2012
 
 The Dart team have now published their [proposal for Mixins](http://news.dartlang.org/2012/08/darts-modest-proposal-for-mixins.html).
