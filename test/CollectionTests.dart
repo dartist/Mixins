@@ -245,7 +245,7 @@ CollectionTests() {
     equal($($(people).pluck('name')).join(', '), 'moe, curly', 'stooges sorted by age');
 
     var list = [null, 4, 1, null, 3, 2];
-    equal($($(list).sortBy(Mixin.identity)).toDebugString(), '1,2,3,4,,', 'sortBy with undefined values');
+    equal($($(list).sortBy(Mixin.identity)).join().toString(), '1,2,3,4,null,null', 'sortBy with undefined values');
 
     list = ["one", "two", "three", "four", "five"];
     var sorted = $(list).sortBy((x) => x.length);
