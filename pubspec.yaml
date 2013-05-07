@@ -3,8 +3,9 @@ description: A mixin library that provides support for the usual functional susp
 authors:
  - Demis Bellot
  - Adam Singer <financeCoding@gmail.com>
+ - Matias Meno <m@tias.me>
 homepage: https://github.com/Dartist/Mixins
-version: 0.0.2
+version: 0.0.3
 environment:
   sdk: '>=0.5.3'
 dev_dependencies:
