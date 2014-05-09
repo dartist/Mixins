@@ -40,7 +40,7 @@ class Mixin {
   bool isEqual(to) => e == to;
   bool isElement() => e != null && e['nodeType'] == 1;
   bool isArray() => e is List;
-  bool isObject() => e == null ? false : e is Object && !(e is String || e is num || e is bool);
+  bool isObject() => e == null ? false : !(e is String || e is num || e is bool);
   bool isFunction() => e is Function;
   bool isString() => e is String;
   bool isNumber() => e is num;
@@ -86,7 +86,7 @@ class Mixin {
       } else { return memo;
     }
       }
-    return List$.fn(e).fold(memo, f);
+    return List$.fn(e).foldl(memo, f);
   }
   void foldl(f(x,y), [memo]) => reduce(f,memo);
   void inject(f(x,y), [memo]) => reduce(f,memo);
@@ -211,7 +211,7 @@ class String$ extends Mixin {
   String trim() => target.trim();
   String stripTags() => target.replaceAll(new RegExp("<\/?[^>]+>"), '');
   String capitalize() => "${target[0].toUpperCase()}${target.substring(1)}";
-  List chars() => target.runes;
+  Runes chars() => target.runes;
   List lines() => target.split(new RegExp(r"\n"));
 
   String clean() => trim().replaceAll(new RegExp(r"\s+"), ' ').trim();
@@ -259,7 +259,7 @@ class String$ extends Mixin {
 
   humanize() => fn(underscored().replaceAll(new RegExp(r"_id$"),'').replaceAll("_", ' ')).capitalize();
 
-  succ() => "${target.substring(0, target.length - 1)}${new String.fromCharCodes([target.charCodeAt(target.length - 1) + 1])}";
+  succ() => "${target.substring(0, target.length - 1)}${new String.fromCharCodes([target.codeUnitAt(target.length - 1) + 1])}";
 
   truncate(length, [String truncateStr='...']) =>
       target.length > length ? "${target.substring(0,length)}$truncateStr" : target;
@@ -268,9 +268,9 @@ class String$ extends Mixin {
 
   String repeat([int times=0, String seperator='']) => _strRepeat(target, times, seperator);
 
-  const int _PAD_LEFT = 1;
-  const int _PAD_RIGHT = 2;
-  const int _PAD_BOTH = 3;
+  static const int _PAD_LEFT = 1;
+  static const int _PAD_RIGHT = 2;
+  static const int _PAD_BOTH = 3;
 
   String pad(int length, [String padStr=null, int type]) {
     String padding = '', str = target;
@@ -288,6 +288,11 @@ class String$ extends Mixin {
         padding = _strRepeat(padStr, padlen);
         return "$target$padding";
       case _PAD_BOTH:
+        padlen = (length - str.length);
+        String _prefix  = _strRepeat(padStr, (padlen/2).ceil().toInt());
+        String _suffix = _strRepeat(padStr, (padlen/2).floor().toInt());
+        return "$_prefix$target$_suffix";
+      default:
         padlen = (length - str.length);
         String _prefix  = _strRepeat(padStr, (padlen/2).ceil().toInt());
         String _suffix = _strRepeat(padStr, (padlen/2).floor().toInt());
@@ -414,7 +419,6 @@ class List$ extends Mixin {
   bool any([_Predicate match]) => some(match);
   bool isEmpty() => target.isEmpty;
   void add(item) => target.add(item);
-  void addLast(item) => target.addLast(item);
   void addAll(Iterable collection) => target.addAll(collection);
   void clear() => target.clear();
   removeLast() => target.removeLast();
