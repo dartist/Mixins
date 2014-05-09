@@ -1,5 +1,5 @@
 library ArrayTests;
-import "dart:json";
+import "dart:convert" as CONV;
 import "DUnit.dart";
 import "package:dartmixins/mixin.dart";
 
@@ -59,10 +59,10 @@ test("arrays: compact", () {
 
 test("arrays: flatten", () {
   var list = [1, [2], [3, [[[4]]]]];
-  equal(stringify($(list).flatten()), '[1,2,3,4]', 'can flatten nested arrays');
-  equal(stringify($(list).flatten(true)), '[1,2,3,[[[4]]]]', 'can shallowly flatten nested arrays');
+  equal(CONV.JSON.decode($(list).flatten()), '[1,2,3,4]', 'can flatten nested arrays');
+  equal(CONV.JSON.decode($(list).flatten(true)), '[1,2,3,[[[4]]]]', 'can shallowly flatten nested arrays');
   var result = ((args) => $(args).flatten())([1, [2], [3, [[[4]]]]]);
-  equal(stringify(result), '[1,2,3,4]', 'works on an arguments object');
+  equal(CONV.JSON.decode(result), '[1,2,3,4]', 'works on an arguments object');
 });
 
 test("arrays: without", () {

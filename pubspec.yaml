@@ -1,11 +1,11 @@
 name: dartmixins
-description: A mixin library that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core Dart objects with a jQuery-like interface.
+version: 0.0.4
 authors:
- - Demis Bellot
- - Adam Singer <financeCoding@gmail.com>
- - Matias Meno <m@tias.me>
+- Demis Bellot
+- Adam Singer <financeCoding@gmail.com>
+- Matias Meno <m@tias.me>
+description: A mixin library that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core Dart objects with a jQuery-like interface.
 homepage: https://github.com/Dartist/Mixins
-version: 0.0.3
 environment:
   sdk: '>=0.5.3'
 dev_dependencies:

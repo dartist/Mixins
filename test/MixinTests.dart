@@ -4,7 +4,7 @@ import "package:dartmixins/mixin.dart";
 
 class MyListExtensions extends List$ {
   MyListExtensions(target) : super(target);
-  int count(predicate) => target.filter(predicate).length;
+  int count(predicate) => target.where(predicate).length;
   double avg() => sum() / length;
 }
 
